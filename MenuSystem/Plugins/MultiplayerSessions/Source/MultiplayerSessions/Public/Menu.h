@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Interfaces/OnlineSessionInterface.h"
+
 #include "Menu.generated.h"
 
-/**
- * 
- */
+class UButton;
+class UMultiplayerSessionsSubsystem;
+
 UCLASS()
 class MULTIPLAYERSESSIONS_API UMenu : public UUserWidget
 {
@@ -16,6 +18,37 @@ class MULTIPLAYERSESSIONS_API UMenu : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void MenuSetup();
+	void MenuSetup(int32 NumberPublicConnections = 4, FString TypeOfMatch = FString(TEXT("FreeForAll")));
+
+protected:
+	virtual bool Initialize() override;
+	virtual void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
+
+	UFUNCTION()
+	void OnCreateSession(bool bWasSuccessful);
+	void OnFindSession(const TArray<FOnlineSessionSearchResult>& SearchResults, bool bWasSuccessful);
+	void OnJoinSession(EOnJoinSessionCompleteResult::Type Result);
+	UFUNCTION()
+	void OnDestroySession(bool bWasSuccessful);
+	UFUNCTION()
+	void OnStartSession(bool bWasSuccessful);
+
+private:
+	UPROPERTY(meta = (BindWidget))
+	UButton* HostButton;	
+	UPROPERTY(meta = (BindWidget))
+	UButton* JoinButton;
+	
+	UMultiplayerSessionsSubsystem* MultiplayerSessionsSubsystem = nullptr;
+
+	int32 NumPublicConnections{4};
+	FString MatchType{TEXT("FreeForAll")};
+
+	UFUNCTION()
+	void HostButtonClicked();
+	UFUNCTION()
+	void JoinButtonClicked();
+
+	void MenuTeardown();
 	
 };
