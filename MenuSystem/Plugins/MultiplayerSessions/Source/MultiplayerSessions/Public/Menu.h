@@ -18,7 +18,7 @@ class MULTIPLAYERSESSIONS_API UMenu : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void MenuSetup(int32 NumberPublicConnections = 4, FString TypeOfMatch = FString(TEXT("FreeForAll")));
+	void MenuSetup(int32 NumberPublicConnections = 4, FString TypeOfMatch = FString(TEXT("FreeForAll")), FString LobbyPath = FString(TEXT("/Game/Levels/Lobby")));
 
 protected:
 	virtual bool Initialize() override;
@@ -26,7 +26,7 @@ protected:
 
 	UFUNCTION()
 	void OnCreateSession(bool bWasSuccessful);
-	void OnFindSession(const TArray<FOnlineSessionSearchResult>& SearchResults, bool bWasSuccessful);
+	void OnFindSessions(const TArray<FOnlineSessionSearchResult>& SearchResults, bool bWasSuccessful);
 	void OnJoinSession(EOnJoinSessionCompleteResult::Type Result);
 	UFUNCTION()
 	void OnDestroySession(bool bWasSuccessful);
@@ -43,6 +43,7 @@ private:
 
 	int32 NumPublicConnections{4};
 	FString MatchType{TEXT("FreeForAll")};
+	FString PathToLobby{TEXT("")};
 
 	UFUNCTION()
 	void HostButtonClicked();
