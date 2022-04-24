@@ -60,10 +60,10 @@ AMenuSystemCharacter::AMenuSystemCharacter() :
 	{
 		OnlineSessionInterface = OnlineSubsystem->GetSessionInterface();
 
-		if (GEngine)
+		/*if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, FString::Printf(TEXT("Found Subsystem: %s"), *OnlineSubsystem->GetSubsystemName().ToString()));
-		}
+		}*/
 	}
 }
 
@@ -137,10 +137,10 @@ void AMenuSystemCharacter::CreateSessionComplete(FName SessionName, bool bSucces
 {
 	if(bSuccess)
 	{
-		if (GEngine)
+		/*if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Blue, FString::Printf(TEXT("Created session ^ %s"), *SessionName.ToString()));
-		}
+		}*/
 
 		if (UWorld* World = GetWorld())
 		{
@@ -149,10 +149,10 @@ void AMenuSystemCharacter::CreateSessionComplete(FName SessionName, bool bSucces
 	}
 	else
 	{
-		if (GEngine)
+		/*if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, FString(TEXT("Failed to create session")));
-		}
+		}*/
 	}
 }
 
@@ -179,14 +179,14 @@ void AMenuSystemCharacter::FindSessionsComplete(bool bSuccess)
 
 		if (MatchType == FString("FreeForAll"))
 		{
-			if (GEngine)
+			/*if (GEngine)
 			{
 				GEngine->AddOnScreenDebugMessage(
 					-1,
 					15.f,
 					FColor::Cyan,
 					FString::Printf(TEXT("Joing Match Type : %s"), *MatchType));
-			}
+			}*/
 			
 			OnlineSessionInterface->AddOnJoinSessionCompleteDelegate_Handle(OnJoinSessionComplete);
 

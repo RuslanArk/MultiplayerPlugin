@@ -5,6 +5,8 @@
 
 #include "Components/Button.h"
 #include "MultiplayerSessionsSubsystem.h"
+#include "OnlineSessionSettings.h"
+#include "OnlineSubsystem.h"
 
 void UMenu::MenuSetup(int32 NumberPublicConnections, FString TypeOfMatch)
 {
@@ -15,7 +17,7 @@ void UMenu::MenuSetup(int32 NumberPublicConnections, FString TypeOfMatch)
 	SetVisibility(ESlateVisibility::Visible);
 	bIsFocusable = true;
 
-	if (UWorld* World = GetWorld())
+	if (const UWorld* World = GetWorld())
 	{
 		if (APlayerController* PlayerController = World->GetFirstPlayerController())
 		{
@@ -101,10 +103,36 @@ void UMenu::OnCreateSession(bool bWasSuccessful)
 
 void UMenu::OnFindSession(const TArray<FOnlineSessionSearchResult>& SearchResults, bool bWasSuccessful)
 {
+	if (!MultiplayerSessionsSubsystem) return;
+
+	for (auto Result : SearchResults)
+	{
+		FString MatchTypeFound;
+		Result.Session.SessionSettings.Get(FName("MatchType"), MatchTypeFound);
+		if (MatchTypeFound == MatchType)
+		{
+			MultiplayerSessionsSubsystem->JoinSession(Result);
+			return;
+		}
+	}
 }
 
 void UMenu::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 {
+	if (IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get())
+	{
+		IOnlineSessionPtr SessionInterface = Subsystem->GetSessionInterface();
+		if (SessionInterface.IsValid())
+		{
+			FString TravelAddress;
+			SessionInterface->GetResolvedConnectString(NAME_GameSession, TravelAddress);
+			
+			if (APlayerController* PlayerController = GetGameInstance()->GetFirstLocalPlayerController())
+			{
+				PlayerController->ClientTravel(TravelAddress, TRAVEL_Absolute);
+			}
+		}
+	}
 }
 
 void UMenu::OnDestroySession(bool bWasSuccessful)
@@ -123,7 +151,9 @@ void UMenu::HostButtonClicked()
 
 void UMenu::JoinButtonClicked()
 {
-	
+	if (!MultiplayerSessionsSubsystem) return;
+
+	MultiplayerSessionsSubsystem->FindSession(10000);
 }
 
 void UMenu::MenuTeardown()
