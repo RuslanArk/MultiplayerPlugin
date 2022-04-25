@@ -8,6 +8,8 @@
 #include "OnlineSessionSettings.h"
 #include "OnlineSubsystem.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogMenuSystem, All, All)
+
 void UMenu::MenuSetup(int32 NumberPublicConnections, FString TypeOfMatch, FString LobbyPath)
 {
 	NumPublicConnections = NumberPublicConnections;
@@ -116,6 +118,7 @@ void UMenu::OnFindSessions(const TArray<FOnlineSessionSearchResult>& SearchResul
 		if (MatchTypeFound == MatchType)
 		{
 			MultiplayerSessionsSubsystem->JoinSession(Result);
+			UE_LOG(LogMenuSystem, Warning, TEXT("Session found"));
 			return;
 		}
 	}
@@ -129,6 +132,12 @@ void UMenu::OnFindSessions(const TArray<FOnlineSessionSearchResult>& SearchResul
 
 void UMenu::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 {
+	UE_LOG(LogMenuSystem, Warning, TEXT("OnJoinSession called"));
+	if (Result != EOnJoinSessionCompleteResult::UnknownError)
+	{
+		UE_LOG(LogMenuSystem, Warning, TEXT("Session result is not Error"));
+	}
+	
 	if (IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get())
 	{
 		IOnlineSessionPtr SessionInterface = Subsystem->GetSessionInterface();
@@ -136,9 +145,12 @@ void UMenu::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 		{
 			FString TravelAddress;
 			SessionInterface->GetResolvedConnectString(NAME_GameSession, TravelAddress);
+
+			UE_LOG(LogMenuSystem, Warning, TEXT("Trying to Join session: %s"), *TravelAddress);
 			
 			if (APlayerController* PlayerController = GetGameInstance()->GetFirstLocalPlayerController())
 			{
+				UE_LOG(LogMenuSystem, Warning, TEXT("Travelling to %s"), *TravelAddress);
 				PlayerController->ClientTravel(TravelAddress, TRAVEL_Absolute);
 			}
 		}
@@ -153,6 +165,7 @@ void UMenu::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 
 void UMenu::OnDestroySession(bool bWasSuccessful)
 {
+	UE_LOG(LogMenuSystem, Warning, TEXT("Session destroyed"));
 }
 
 void UMenu::OnStartSession(bool bWasSuccessful)
