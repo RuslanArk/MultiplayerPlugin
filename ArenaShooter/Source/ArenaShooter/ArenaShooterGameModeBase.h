@@ -13,5 +13,7 @@ UCLASS()
 class ARENASHOOTER_API AArenaShooterGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+	
 	
 };
