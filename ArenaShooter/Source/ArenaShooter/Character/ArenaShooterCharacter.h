@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class UWidgetComponent;
 
 UCLASS()
 class ARENASHOOTER_API AArenaShooterCharacter : public ACharacter
@@ -35,5 +36,6 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* FollowCamera;
 	
-	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
+	UWidgetComponent* OverheadWidget;
 };
