@@ -3,10 +3,12 @@
 
 #include "ArenaShooterCharacter.h"
 
+#include "ArenaShooter/Weapon/Weapon.h"
 #include "Camera/CameraComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Net/UnrealNetwork.h"
 
 
 AArenaShooterCharacter::AArenaShooterCharacter()
@@ -29,6 +31,13 @@ AArenaShooterCharacter::AArenaShooterCharacter()
 	OverheadWidget->SetupAttachment(GetRootComponent());
 }
 
+void AArenaShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AArenaShooterCharacter, OverlappedWeapon);
+}
+
 void AArenaShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -39,6 +48,10 @@ void AArenaShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (OverlappedWeapon)
+	{
+		OverlappedWeapon->ShowPickupWidget(true);
+	}
 }
 
 void AArenaShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

@@ -8,6 +8,7 @@
 
 class USkeletalMeshComponent;
 class USphereComponent;
+class UWidgetComponent;
 
 UENUM(BlueprintType)
 enum class EWeaponState : uint8
@@ -34,14 +35,22 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	EWeaponState WeaponState;
 	
+	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
+	UWidgetComponent* PickupWidget;
+	
 public:
 	AWeapon();
 
 	virtual void Tick(float DeltaTime) override;
+	void ShowPickupWidget(bool bShowWidget);
 
 protected:
 	virtual void BeginPlay() override;
-	
-		
 
+	UFUNCTION()
+	virtual void OnAreaSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	/*UFUNCTION()
+	virtual void OnAreaSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	*/
+	
 };

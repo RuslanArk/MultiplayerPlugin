@@ -9,6 +9,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class UWidgetComponent;
+class AWeapon;
 
 UCLASS()
 class ARENASHOOTER_API AArenaShooterCharacter : public ACharacter
@@ -17,6 +18,8 @@ class ARENASHOOTER_API AArenaShooterCharacter : public ACharacter
 
 public:
 	AArenaShooterCharacter();
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -38,4 +41,10 @@ private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	UWidgetComponent* OverheadWidget;
+
+	UPROPERTY(Replicated)
+	AWeapon* OverlappedWeapon;
+
+public:
+	FORCEINLINE void SetOverlapingWeapon(AWeapon* Weapon) { OverlappedWeapon = Weapon; }
 };

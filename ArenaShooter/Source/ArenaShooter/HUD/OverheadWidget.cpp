@@ -4,7 +4,6 @@
 #include "OverheadWidget.h"
 
 #include "Components/TextBlock.h"
-#include "Components/TextBlock.h"
 
 void UOverheadWidget::SetDisplayText(FString TextToDisplay)
 {
