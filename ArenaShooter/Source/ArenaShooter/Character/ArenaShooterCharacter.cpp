@@ -35,7 +35,7 @@ void AArenaShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AArenaShooterCharacter, OverlappedWeapon);
+	DOREPLIFETIME_CONDITION(AArenaShooterCharacter, OverlappingWeapon, COND_OwnerOnly);
 }
 
 void AArenaShooterCharacter::BeginPlay()
@@ -48,10 +48,6 @@ void AArenaShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (OverlappedWeapon)
-	{
-		OverlappedWeapon->ShowPickupWidget(true);
-	}
 }
 
 void AArenaShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -97,5 +93,32 @@ void AArenaShooterCharacter::Turn(float Value)
 void AArenaShooterCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
+}
+
+void AArenaShooterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
+{
+	if (OverlappingWeapon)
+	{
+		OverlappingWeapon->ShowPickupWidget(false);
+	}
+	
+	OverlappingWeapon = Weapon;
+	if (IsLocallyControlled() && OverlappingWeapon)
+	{
+		OverlappingWeapon->ShowPickupWidget(true);
+	}
+}
+
+void AArenaShooterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
+{
+	if (OverlappingWeapon)
+	{
+		OverlappingWeapon->ShowPickupWidget(true);
+	}	
+
+	if (LastWeapon)
+	{
+		LastWeapon->ShowPickupWidget(false);
+	}
 }
 

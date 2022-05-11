@@ -16,23 +16,6 @@ class ARENASHOOTER_API AArenaShooterCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-public:
-	AArenaShooterCharacter();
-
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-
-protected:
-	virtual void BeginPlay() override;
-	
-	void MoveForward(float Value);
-	void MoveRight(float Value);
-	void Turn(float Value);
-	void LookUp(float Value);
-
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	USpringArmComponent* CameraBoom;
@@ -42,9 +25,30 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	UWidgetComponent* OverheadWidget;
 
-	UPROPERTY(Replicated)
-	AWeapon* OverlappedWeapon;
-
+	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
+	AWeapon* OverlappingWeapon;
+	
 public:
-	FORCEINLINE void SetOverlapingWeapon(AWeapon* Weapon) { OverlappedWeapon = Weapon; }
+	AArenaShooterCharacter();
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void SetOverlappingWeapon(AWeapon* Weapon);
+
+protected:
+	virtual void BeginPlay() override;
+	
+	void MoveForward(float Value);
+	void MoveRight(float Value);
+	void Turn(float Value);
+	void LookUp(float Value);
+
+
+private:
+	UFUNCTION()
+	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
+	
 };

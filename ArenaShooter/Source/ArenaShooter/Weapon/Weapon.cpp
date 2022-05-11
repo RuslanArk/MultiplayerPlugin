@@ -3,7 +3,6 @@
 
 #include "Weapon.h"
 
-#include "../../../../../../../UE_5_Source/Engine/Shaders/Private/Common.ush"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 
@@ -39,8 +38,9 @@ void AWeapon::BeginPlay()
 		AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		AreaSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 		AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnAreaSphereBeginOverlap);
-		//AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnAreaSphereEndOverlap);
+		AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnAreaSphereEndOverlap);	
 	}
+
 
 	if (PickupWidget)
 	{
@@ -57,22 +57,22 @@ void AWeapon::Tick(float DeltaTime)
 void AWeapon::OnAreaSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->IsA<AArenaShooterCharacter>() && PickupWidget)
+	AArenaShooterCharacter* ShooterCharacter = Cast<AArenaShooterCharacter>(OtherActor);
+	if (ShooterCharacter)
 	{
-		PickupWidget->SetVisibility(true);
+		ShooterCharacter->SetOverlappingWeapon(this);
 	}
 }
 
-/*void AWeapon::OnAreaSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AWeapon::OnAreaSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	AArenaShooterCharacter* ShooterCharacter = Cast<AArenaShooterCharacter>(OtherActor);
 	if (ShooterCharacter)
 	{
-		ShooterCharacter->SetOverlapingWeapon(this);
+		ShooterCharacter->SetOverlappingWeapon(nullptr);
 	}
-}*/
-
+}
 
 void AWeapon::ShowPickupWidget(bool bShowWidget)
 {
