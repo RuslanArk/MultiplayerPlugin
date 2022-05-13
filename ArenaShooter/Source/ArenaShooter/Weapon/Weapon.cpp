@@ -5,8 +5,11 @@
 
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Net/UnrealNetwork.h"
 
 #include "ArenaShooter/Character/ArenaShooterCharacter.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogWeapon, All, All);
 
 AWeapon::AWeapon()
 {
@@ -54,13 +57,20 @@ void AWeapon::Tick(float DeltaTime)
 
 }
 
+void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AWeapon, WeaponState);
+}
+
 void AWeapon::OnAreaSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	AArenaShooterCharacter* ShooterCharacter = Cast<AArenaShooterCharacter>(OtherActor);
 	if (ShooterCharacter)
 	{
-		ShooterCharacter->SetOverlappingWeapon(this);
+		ShooterCharacter->SetOverlappingWeapon(this);		
 	}
 }
 
@@ -79,6 +89,44 @@ void AWeapon::ShowPickupWidget(bool bShowWidget)
 	if (PickupWidget)
 	{
 		PickupWidget->SetVisibility(bShowWidget);
+	}
+}
+
+void AWeapon::OnRep_WeaponState()
+{
+	switch (WeaponState)
+	{
+	case EWeaponState::EWS_Initial:
+	
+		break;
+	case EWeaponState::EWS_Equipped:
+		ShowPickupWidget(false);
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		break;
+	case EWeaponState::EWS_Dropped:
+		
+		break;
+	default: UE_LOG(LogWeapon, Warning, TEXT("Something went wrong with weapon state changing"));
+	}
+}
+
+void AWeapon::SetWeaponState(EWeaponState NewWeaponState)
+{
+	WeaponState = NewWeaponState;
+	
+	switch (WeaponState)
+	{
+	case EWeaponState::EWS_Initial:
+	
+		break;
+	case EWeaponState::EWS_Equipped:
+		ShowPickupWidget(false);
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		break;
+	case EWeaponState::EWS_Dropped:
+		
+		break;
+	default: UE_LOG(LogWeapon, Warning, TEXT("Something went wrong with weapon state changing"));
 	}
 }
 

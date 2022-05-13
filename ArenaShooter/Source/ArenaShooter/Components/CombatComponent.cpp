@@ -30,14 +30,13 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 {
 	if (!OwningCharacter || !WeaponToEquip) return;
+	EquipedWeapon = WeaponToEquip;
 
-	EquippedWeapon = WeaponToEquip;
-	EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
 	if (const USkeletalMeshSocket* HandSocket = OwningCharacter->GetMesh()->GetSocketByName(FName("RightHandSocket")))
 	{
-		HandSocket->AttachActor(EquippedWeapon, OwningCharacter->GetMesh());
-	}
-	EquippedWeapon->SetOwner(OwningCharacter);
-	EquippedWeapon->ShowPickupWidget(false);
+		HandSocket->AttachActor(EquipedWeapon, OwningCharacter->GetMesh());
+		EquipedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
+		EquipedWeapon->SetOwner(OwningCharacter);
+	}	
 }
 

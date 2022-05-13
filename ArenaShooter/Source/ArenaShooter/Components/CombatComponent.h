@@ -16,7 +16,7 @@ class ARENASHOOTER_API UCombatComponent : public UActorComponent
 
 private:
 	AArenaShooterCharacter* OwningCharacter = nullptr;
-	AWeapon* EquippedWeapon = nullptr;
+	AWeapon* EquipedWeapon = nullptr;
 
 public:
 	UCombatComponent();

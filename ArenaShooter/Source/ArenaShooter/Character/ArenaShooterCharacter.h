@@ -53,9 +53,11 @@ protected:
 	void LookUp(float Value);
 	void EquipButtonPressed();
 
-
 private:
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
+
+	UFUNCTION(Server, Reliable)
+	void ServerEquipButtonPressed();
 	
 };
