@@ -29,4 +29,6 @@ void UArenaShooterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	bIsInAir = ArenaShooterCharacter->GetCharacterMovement()->IsFalling();
 	bIsAccelerating = ArenaShooterCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
+
+	bWeaponEquipped = ArenaShooterCharacter->IsWeaponEquipped();
 }

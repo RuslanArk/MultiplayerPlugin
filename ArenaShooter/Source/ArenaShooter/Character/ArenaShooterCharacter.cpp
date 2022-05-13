@@ -161,3 +161,9 @@ void AArenaShooterCharacter::ServerEquipButtonPressed_Implementation()
 	}
 }
 
+bool AArenaShooterCharacter::IsWeaponEquipped()
+{
+	return Combat && Combat->EquippedWeapon;
+}
+
+

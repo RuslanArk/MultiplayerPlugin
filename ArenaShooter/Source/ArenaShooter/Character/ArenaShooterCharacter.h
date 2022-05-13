@@ -21,6 +21,7 @@ class ARENASHOOTER_API AArenaShooterCharacter : public ACharacter
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	USpringArmComponent* CameraBoom;
+	
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* FollowCamera;
 	
@@ -43,6 +44,8 @@ public:
 	virtual void PostInitializeComponents() override;
 	
 	void SetOverlappingWeapon(AWeapon* Weapon);
+
+	bool IsWeaponEquipped();
 
 protected:
 	virtual void BeginPlay() override;

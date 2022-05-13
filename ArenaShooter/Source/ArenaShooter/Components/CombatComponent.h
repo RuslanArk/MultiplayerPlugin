@@ -16,7 +16,9 @@ class ARENASHOOTER_API UCombatComponent : public UActorComponent
 
 private:
 	AArenaShooterCharacter* OwningCharacter = nullptr;
-	AWeapon* EquipedWeapon = nullptr;
+
+	UPROPERTY(Replicated)
+	AWeapon* EquippedWeapon = nullptr;
 
 public:
 	UCombatComponent();
@@ -24,7 +26,7 @@ public:
 	friend class AArenaShooterCharacter;
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	void EquipWeapon(AWeapon* WeaponToEquip);
 
 protected:

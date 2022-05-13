@@ -6,6 +6,7 @@
 #include "ArenaShooter/Character/ArenaShooterCharacter.h"
 #include "ArenaShooter/Weapon/Weapon.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Net/UnrealNetwork.h"
 
 
 UCombatComponent::UCombatComponent()
@@ -27,16 +28,23 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 }
 
+void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UCombatComponent, EquippedWeapon);
+}
+
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 {
 	if (!OwningCharacter || !WeaponToEquip) return;
-	EquipedWeapon = WeaponToEquip;
+	EquippedWeapon = WeaponToEquip;
 
 	if (const USkeletalMeshSocket* HandSocket = OwningCharacter->GetMesh()->GetSocketByName(FName("RightHandSocket")))
 	{
-		HandSocket->AttachActor(EquipedWeapon, OwningCharacter->GetMesh());
-		EquipedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
-		EquipedWeapon->SetOwner(OwningCharacter);
+		HandSocket->AttachActor(EquippedWeapon, OwningCharacter->GetMesh());
+		EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
+		EquippedWeapon->SetOwner(OwningCharacter);
 	}	
 }
 
