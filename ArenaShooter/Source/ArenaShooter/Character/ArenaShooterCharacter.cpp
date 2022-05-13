@@ -3,6 +3,7 @@
 
 #include "ArenaShooterCharacter.h"
 
+#include "ArenaShooter/Components/CombatComponent.h"
 #include "ArenaShooter/Weapon/Weapon.h"
 #include "Camera/CameraComponent.h"
 #include "Components/WidgetComponent.h"
@@ -29,6 +30,9 @@ AArenaShooterCharacter::AArenaShooterCharacter()
 
 	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Overhead Widget"));
 	OverheadWidget->SetupAttachment(GetRootComponent());
+
+	Combat = CreateDefaultSubobject<UCombatComponent>("Combat Component");
+	Combat->SetIsReplicated(true);
 }
 
 void AArenaShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -58,11 +62,23 @@ void AArenaShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	
+	PlayerInputComponent->BindAction("Equip", IE_Pressed, this, &AArenaShooterCharacter::EquipButtonPressed);
+	
 	PlayerInputComponent->BindAxis("MoveForward", this, &AArenaShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AArenaShooterCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("Turn", this, &AArenaShooterCharacter::Turn);
 	PlayerInputComponent->BindAxis("LookUp", this, &AArenaShooterCharacter::LookUp);
 	
+}
+
+void AArenaShooterCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (Combat)
+	{
+		Combat->OwningCharacter = this;
+	}
 }
 
 void AArenaShooterCharacter::MoveForward(float Value)
@@ -93,6 +109,14 @@ void AArenaShooterCharacter::Turn(float Value)
 void AArenaShooterCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
+}
+
+void AArenaShooterCharacter::EquipButtonPressed()
+{
+	if (Combat && HasAuthority())
+	{
+		Combat->EquipWeapon(OverlappingWeapon);
+	}
 }
 
 void AArenaShooterCharacter::SetOverlappingWeapon(AWeapon* Weapon)

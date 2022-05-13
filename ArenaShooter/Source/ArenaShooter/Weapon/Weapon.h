@@ -44,6 +44,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void ShowPickupWidget(bool bShowWidget);
 
+	FORCEINLINE void SetWeaponState(EWeaponState NewWeaponState) { WeaponState = NewWeaponState; }
+
 protected:
 	virtual void BeginPlay() override;
 

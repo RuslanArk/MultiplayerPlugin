@@ -9,6 +9,8 @@
 class UCameraComponent;
 class USpringArmComponent;
 class UWidgetComponent;
+
+class UCombatComponent;
 class AWeapon;
 
 UCLASS()
@@ -27,6 +29,9 @@ private:
 
 	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
 	AWeapon* OverlappingWeapon;
+
+	UPROPERTY(VisibleAnywhere)
+	UCombatComponent* Combat;
 	
 public:
 	AArenaShooterCharacter();
@@ -35,7 +40,8 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	virtual void PostInitializeComponents() override;
+	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 
 protected:
@@ -45,6 +51,7 @@ protected:
 	void MoveRight(float Value);
 	void Turn(float Value);
 	void LookUp(float Value);
+	void EquipButtonPressed();
 
 
 private:
