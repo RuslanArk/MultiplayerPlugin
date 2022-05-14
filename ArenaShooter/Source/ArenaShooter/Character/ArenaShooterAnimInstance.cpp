@@ -31,4 +31,5 @@ void UArenaShooterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsAccelerating = ArenaShooterCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
 
 	bWeaponEquipped = ArenaShooterCharacter->IsWeaponEquipped();
+	bIsCrouched = ArenaShooterCharacter->bIsCrouched;
 }

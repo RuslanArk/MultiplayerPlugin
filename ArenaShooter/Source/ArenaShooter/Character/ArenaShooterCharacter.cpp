@@ -63,6 +63,7 @@ void AArenaShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	
 	PlayerInputComponent->BindAction("Equip", IE_Pressed, this, &AArenaShooterCharacter::EquipButtonPressed);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AArenaShooterCharacter::CrouchButtonPressed);
 	
 	PlayerInputComponent->BindAxis("MoveForward", this, &AArenaShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AArenaShooterCharacter::MoveRight);
@@ -124,6 +125,18 @@ void AArenaShooterCharacter::EquipButtonPressed()
 			ServerEquipButtonPressed();
 		}
 	}
+}
+
+void AArenaShooterCharacter::CrouchButtonPressed()
+{
+	if (bIsCrouched)
+	{
+		UnCrouch();
+	}
+	else
+	{
+		Crouch();
+	}	
 }
 
 void AArenaShooterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
