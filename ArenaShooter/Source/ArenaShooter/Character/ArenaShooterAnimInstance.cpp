@@ -32,4 +32,5 @@ void UArenaShooterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	bWeaponEquipped = ArenaShooterCharacter->IsWeaponEquipped();
 	bIsCrouched = ArenaShooterCharacter->bIsCrouched;
+	bIsAiming = ArenaShooterCharacter->IsAiming();
 }

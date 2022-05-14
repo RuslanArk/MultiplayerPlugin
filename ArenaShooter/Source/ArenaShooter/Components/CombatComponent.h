@@ -19,6 +19,8 @@ private:
 
 	UPROPERTY(Replicated)
 	AWeapon* EquippedWeapon = nullptr;
+	UPROPERTY(Replicated)
+	bool bAiming;
 
 public:
 	UCombatComponent();
@@ -31,5 +33,10 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	void SetAiming(bool bIsAiming);
+
+	UFUNCTION(Server, Reliable)
+	void ServerSetAiming(bool bIsAiming);
 		
 };

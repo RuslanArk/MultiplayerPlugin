@@ -64,6 +64,8 @@ void AArenaShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	
 	PlayerInputComponent->BindAction("Equip", IE_Pressed, this, &AArenaShooterCharacter::EquipButtonPressed);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AArenaShooterCharacter::CrouchButtonPressed);
+	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AArenaShooterCharacter::AimButtonPressed);
+	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AArenaShooterCharacter::AimButtonReleased);
 	
 	PlayerInputComponent->BindAxis("MoveForward", this, &AArenaShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AArenaShooterCharacter::MoveRight);
@@ -139,6 +141,22 @@ void AArenaShooterCharacter::CrouchButtonPressed()
 	}	
 }
 
+void AArenaShooterCharacter::AimButtonPressed()
+{
+	if (Combat)
+	{
+		Combat->SetAiming(true);
+	}
+}
+
+void AArenaShooterCharacter::AimButtonReleased()
+{
+	if (Combat)
+	{
+		Combat->SetAiming(false);
+	}
+}
+
 void AArenaShooterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 {
 	if (OverlappingWeapon)
@@ -177,6 +195,11 @@ void AArenaShooterCharacter::ServerEquipButtonPressed_Implementation()
 bool AArenaShooterCharacter::IsWeaponEquipped()
 {
 	return Combat && Combat->EquippedWeapon;
+}
+
+bool AArenaShooterCharacter::IsAiming()
+{
+	return Combat && Combat->bAiming;
 }
 
 
