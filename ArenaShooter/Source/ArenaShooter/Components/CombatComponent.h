@@ -15,9 +15,10 @@ class ARENASHOOTER_API UCombatComponent : public UActorComponent
 	GENERATED_BODY()
 
 private:
+	UPROPERTY()
 	AArenaShooterCharacter* OwningCharacter = nullptr;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	AWeapon* EquippedWeapon = nullptr;
 	UPROPERTY(Replicated)
 	bool bAiming;
@@ -38,5 +39,8 @@ protected:
 
 	UFUNCTION(Server, Reliable)
 	void ServerSetAiming(bool bIsAiming);
+
+	UFUNCTION()
+	void OnRep_EquippedWeapon();
 		
 };

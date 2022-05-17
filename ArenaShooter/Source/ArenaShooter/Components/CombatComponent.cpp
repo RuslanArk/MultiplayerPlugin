@@ -6,6 +6,7 @@
 #include "ArenaShooter/Character/ArenaShooterCharacter.h"
 #include "ArenaShooter/Weapon/Weapon.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -46,13 +47,24 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 		HandSocket->AttachActor(EquippedWeapon, OwningCharacter->GetMesh());
 		EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
 		EquippedWeapon->SetOwner(OwningCharacter);
-	}	
+		OwningCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
+		OwningCharacter->bUseControllerRotationYaw = true;
+	}
 }
 
 void UCombatComponent::SetAiming(bool bIsAiming)
 {
 	bAiming = bIsAiming;	
 	ServerSetAiming(bIsAiming);	
+}
+
+void UCombatComponent::OnRep_EquippedWeapon()
+{
+	if (EquippedWeapon && OwningCharacter)
+	{
+		OwningCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
+		OwningCharacter->bUseControllerRotationYaw = true;
+	}
 }
 
 void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
