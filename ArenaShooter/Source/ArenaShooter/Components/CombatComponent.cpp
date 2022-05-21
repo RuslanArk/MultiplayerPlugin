@@ -9,18 +9,24 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogCombatComp, All, All);
 
 UCombatComponent::UCombatComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
+	BaseWalkSpeed = 600.f;
+	AimWalkSpeed = 450.f;
 }
 
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+	if (OwningCharacter)
+	{
+		OwningCharacter->GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
+	}
 }
 
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -54,8 +60,21 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 
 void UCombatComponent::SetAiming(bool bIsAiming)
 {
-	bAiming = bIsAiming;	
-	ServerSetAiming(bIsAiming);	
+	bAiming = bIsAiming;
+	ServerSetAiming(bIsAiming);
+	if (OwningCharacter)
+	{
+		OwningCharacter->GetCharacterMovement()->MaxWalkSpeed = bIsAiming ? AimWalkSpeed : BaseWalkSpeed;
+	}
+}
+
+void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
+{
+	bAiming = bIsAiming;
+	if (OwningCharacter)
+	{
+		OwningCharacter->GetCharacterMovement()->MaxWalkSpeed = bIsAiming ? AimWalkSpeed : BaseWalkSpeed;
+	}
 }
 
 void UCombatComponent::OnRep_EquippedWeapon()
@@ -65,10 +84,5 @@ void UCombatComponent::OnRep_EquippedWeapon()
 		OwningCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 		OwningCharacter->bUseControllerRotationYaw = true;
 	}
-}
-
-void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
-{
-	bAiming = bIsAiming;
 }
 

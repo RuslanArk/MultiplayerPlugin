@@ -23,6 +23,11 @@ private:
 	UPROPERTY(Replicated)
 	bool bAiming;
 
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	float BaseWalkSpeed;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	float AimWalkSpeed;
+
 public:
 	UCombatComponent();
 

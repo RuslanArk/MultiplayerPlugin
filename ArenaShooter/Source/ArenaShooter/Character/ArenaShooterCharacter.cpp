@@ -6,6 +6,7 @@
 #include "ArenaShooter/Components/CombatComponent.h"
 #include "ArenaShooter/Weapon/Weapon.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -33,6 +34,10 @@ AArenaShooterCharacter::AArenaShooterCharacter()
 
 	Combat = CreateDefaultSubobject<UCombatComponent>("Combat Component");
 	Combat->SetIsReplicated(true);
+
+	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 }
 
 void AArenaShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
