@@ -34,6 +34,10 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UCombatComponent* Combat;
 	
+	float AO_Yaw;
+	float AO_Pitch;
+	FRotator StartingAimRotation;
+	
 public:
 	AArenaShooterCharacter();
 
@@ -48,6 +52,9 @@ public:
 	bool IsWeaponEquipped();
 	bool IsAiming();
 
+	FORCEINLINE float GetAOYaw() const { return AO_Yaw; }
+	FORCEINLINE float GetAOPitch() const { return AO_Pitch; }
+
 protected:
 	virtual void BeginPlay() override;
 	
@@ -59,6 +66,8 @@ protected:
 	void CrouchButtonPressed();
 	void AimButtonPressed();
 	void AimButtonReleased();
+
+	void AimOffset(float DeltaTime);
 
 private:
 	UFUNCTION()
