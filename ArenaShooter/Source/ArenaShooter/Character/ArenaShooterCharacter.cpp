@@ -189,6 +189,13 @@ void AArenaShooterCharacter::AimOffset(float DeltaTime)
 	}
 
 	AO_Pitch = GetBaseAimRotation().Pitch;
+	if (AO_Pitch > 90.f && !IsLocallyControlled())
+	{
+		// map Pitch from [270, 360) to [-90, 0)
+		const FVector2D InRange{270.f, 360.f};
+		const FVector2D OutRange{-90.f, 0.0f};
+		AO_Pitch = FMath::GetMappedRangeValueClamped(InRange, OutRange, AO_Pitch);
+	}
 }
 
 void AArenaShooterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
