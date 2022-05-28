@@ -7,6 +7,7 @@
 #include "ArenaShooterAnimInstance.generated.h"
 
 class AArenaShooterCharacter;
+class AWeapon;
 
 UCLASS()
 class ARENASHOOTER_API UArenaShooterAnimInstance : public UAnimInstance
@@ -16,6 +17,8 @@ class ARENASHOOTER_API UArenaShooterAnimInstance : public UAnimInstance
 private:
 	UPROPERTY(BlueprintReadOnly, Category = Character, meta = (AllowPrivateAccess = "true"))
 	AArenaShooterCharacter* ArenaShooterCharacter;
+	UPROPERTY(BlueprintReadOnly, Category = Character, meta = (AllowPrivateAccess = "true"))
+	AWeapon* EquippedWeapon;
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	float Speed;
@@ -37,6 +40,10 @@ private:
 	float AO_Yaw;
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	float AO_Pitch;
+	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	FTransform LeftHandTransform;
+
+	
 
 	FRotator CharacterRotationLastFrame;
 	FRotator CharacterRotation;

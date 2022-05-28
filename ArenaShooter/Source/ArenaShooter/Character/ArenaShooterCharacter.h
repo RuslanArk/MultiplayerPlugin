@@ -33,7 +33,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	UCombatComponent* Combat;
-	
+
 	float AO_Yaw;
 	float AO_Pitch;
 	FRotator StartingAimRotation;
@@ -51,6 +51,8 @@ public:
 
 	bool IsWeaponEquipped();
 	bool IsAiming();
+
+	AWeapon* GetEquippedWeapon();
 
 	FORCEINLINE float GetAOYaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() const { return AO_Pitch; }

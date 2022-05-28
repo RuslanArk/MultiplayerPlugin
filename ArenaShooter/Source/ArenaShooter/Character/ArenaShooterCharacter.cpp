@@ -170,13 +170,13 @@ void AArenaShooterCharacter::AimOffset(float DeltaTime)
 	if (Combat && !Combat->EquippedWeapon) return;
 	FVector Velocity = GetVelocity();
 	Velocity.Z = 0.f;
-	float Speed = Velocity.Size();
-	bool IsInAir = GetCharacterMovement()->IsFalling();
+	const float Speed = Velocity.Size();
+	const bool IsInAir = GetCharacterMovement()->IsFalling();
 
 	if (Speed == 0.f && !IsInAir)
 	{
-		FRotator CurrentAimRotation = FRotator(0.0f, GetBaseAimRotation().Yaw, 0.0f);
-		FRotator DeltaAimRotation = UKismetMathLibrary::NormalizedDeltaRotator(CurrentAimRotation, StartingAimRotation);
+		const FRotator CurrentAimRotation = FRotator(0.0f, GetBaseAimRotation().Yaw, 0.0f);
+		const FRotator DeltaAimRotation = UKismetMathLibrary::NormalizedDeltaRotator(CurrentAimRotation, StartingAimRotation);
 		AO_Yaw = DeltaAimRotation.Yaw;
 		bUseControllerRotationYaw = false;
 	}
@@ -241,6 +241,12 @@ bool AArenaShooterCharacter::IsWeaponEquipped()
 bool AArenaShooterCharacter::IsAiming()
 {
 	return Combat && Combat->bAiming;
+}
+
+AWeapon* AArenaShooterCharacter::GetEquippedWeapon()
+{
+	if (!Combat) return nullptr;
+	return Combat->EquippedWeapon;
 }
 
 
