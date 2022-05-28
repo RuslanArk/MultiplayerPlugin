@@ -36,6 +36,7 @@ void UArenaShooterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	EquippedWeapon = ArenaShooterCharacter->GetEquippedWeapon();
 	bIsCrouched = ArenaShooterCharacter->bIsCrouched;
 	bIsAiming = ArenaShooterCharacter->IsAiming();
+	TurningInPlace = ArenaShooterCharacter->GetTurningInPlace();
 
 	// Offset Yaw for strafing
 	FRotator AimRotation = ArenaShooterCharacter->GetBaseAimRotation();

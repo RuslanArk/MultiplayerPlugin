@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "ArenaShooter/ArenaShooterTypes/ArenaShooterEnums.h"
+
 #include "ArenaShooterCharacter.generated.h"
 
 class UCameraComponent;
@@ -34,9 +37,12 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UCombatComponent* Combat;
 
+	float InterpAO_Yaw;
 	float AO_Yaw;
 	float AO_Pitch;
 	FRotator StartingAimRotation;
+
+	ETurningInPlace TurningInPlace;
 	
 public:
 	AArenaShooterCharacter();
@@ -56,6 +62,7 @@ public:
 
 	FORCEINLINE float GetAOYaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() const { return AO_Pitch; }
+	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -77,5 +84,8 @@ private:
 
 	UFUNCTION(Server, Reliable)
 	void ServerEquipButtonPressed();
+
+	void TurnInPlace(float DeltaTime);
 	
 };
+

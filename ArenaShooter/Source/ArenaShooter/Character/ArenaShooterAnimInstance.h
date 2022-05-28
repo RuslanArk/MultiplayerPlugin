@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+
+#include "ArenaShooter/ArenaShooterTypes/ArenaShooterEnums.h"
+
 #include "ArenaShooterAnimInstance.generated.h"
 
 class AArenaShooterCharacter;
@@ -42,8 +45,8 @@ private:
 	float AO_Pitch;
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	FTransform LeftHandTransform;
-
-	
+	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	ETurningInPlace TurningInPlace;
 
 	FRotator CharacterRotationLastFrame;
 	FRotator CharacterRotation;
