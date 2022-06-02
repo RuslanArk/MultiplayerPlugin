@@ -38,6 +38,7 @@ AArenaShooterCharacter::AArenaShooterCharacter()
 	Combat->SetIsReplicated(true);
 
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 0.0f, 850.f);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 
@@ -74,7 +75,7 @@ void AArenaShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	
 	if (!PlayerInputComponent) return;
 
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AArenaShooterCharacter::Jump);
 	
 	PlayerInputComponent->BindAction("Equip", IE_Pressed, this, &AArenaShooterCharacter::EquipButtonPressed);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AArenaShooterCharacter::CrouchButtonPressed);
@@ -86,6 +87,18 @@ void AArenaShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	PlayerInputComponent->BindAxis("Turn", this, &AArenaShooterCharacter::Turn);
 	PlayerInputComponent->BindAxis("LookUp", this, &AArenaShooterCharacter::LookUp);
 	
+}
+
+void AArenaShooterCharacter::Jump()
+{
+	if (bIsCrouched)
+	{
+		UnCrouch();
+	}
+	else
+	{
+		Super::Jump();
+	}
 }
 
 void AArenaShooterCharacter::PostInitializeComponents()
