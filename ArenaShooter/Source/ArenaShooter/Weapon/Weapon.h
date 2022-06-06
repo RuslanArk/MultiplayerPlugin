@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
+class UAnimationAsset;
 class USkeletalMeshComponent;
 class USphereComponent;
 class UWidgetComponent;
@@ -37,6 +38,9 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	UWidgetComponent* PickupWidget;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	UAnimationAsset* FireAnimation;
 	
 public:
 	AWeapon();
@@ -46,6 +50,7 @@ public:
 	
 	void ShowPickupWidget(bool bShowWidget);
 	void SetWeaponState(EWeaponState NewWeaponState);
+	void Fire();
 	
 	FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }

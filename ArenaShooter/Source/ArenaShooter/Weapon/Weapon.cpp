@@ -3,6 +3,7 @@
 
 #include "Weapon.h"
 
+#include "Animation/AnimationAsset.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Net/UnrealNetwork.h"
@@ -127,6 +128,14 @@ void AWeapon::SetWeaponState(EWeaponState NewWeaponState)
 		
 		break;
 	default: UE_LOG(LogWeapon, Warning, TEXT("Something went wrong with weapon state changing"));
+	}
+}
+
+void AWeapon::Fire()
+{
+	if (FireAnimation)
+	{
+		WeaponMesh->PlayAnimation(FireAnimation, false);
 	}
 }
 

@@ -27,6 +27,8 @@ private:
 	float BaseWalkSpeed;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	float AimWalkSpeed;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	bool bFireButtonPressed;
 
 public:
 	UCombatComponent();
@@ -47,5 +49,13 @@ protected:
 
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
+
+	void FireButtonPressed(bool bPressed);
+
+	UFUNCTION(Server, Reliable)
+	void ServerFire();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastFire();
 		
 };

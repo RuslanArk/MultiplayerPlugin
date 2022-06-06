@@ -9,6 +9,7 @@
 
 #include "ArenaShooterCharacter.generated.h"
 
+class UAnimMontage;
 class UCameraComponent;
 class USpringArmComponent;
 class UWidgetComponent;
@@ -37,6 +38,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UCombatComponent* Combat;
 
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	UAnimMontage* FireWeaponMontage;
+
 	float InterpAO_Yaw;
 	float AO_Yaw;
 	float AO_Pitch;
@@ -59,6 +63,7 @@ public:
 	bool IsAiming();
 
 	AWeapon* GetEquippedWeapon();
+	void PlayFireMontage(bool bAiming);
 
 	FORCEINLINE float GetAOYaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() const { return AO_Pitch; }
@@ -76,6 +81,8 @@ protected:
 	void CrouchButtonPressed();
 	void AimButtonPressed();
 	void AimButtonReleased();
+	void FireButtonPressed();
+	void FireButtonReleased();
 
 	void AimOffset(float DeltaTime);
 
