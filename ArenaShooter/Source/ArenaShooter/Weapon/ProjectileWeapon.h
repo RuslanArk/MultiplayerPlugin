@@ -6,12 +6,17 @@
 #include "Weapon.h"
 #include "ProjectileWeapon.generated.h"
 
-/**
- * 
- */
+class AProjectile;
+
 UCLASS()
 class ARENASHOOTER_API AProjectileWeapon : public AWeapon
 {
 	GENERATED_BODY()
-	
+
+private:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AProjectile> ProjectileClass;
+
+public:
+	virtual void Fire(const FVector& HitTarget) override;
 };

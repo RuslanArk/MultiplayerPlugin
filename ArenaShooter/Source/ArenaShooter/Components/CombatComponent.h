@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "CombatComponent.generated.h"
 
+#define TRACE_LENGTH 80000.f;
+
 class AWeapon;
 class AArenaShooterCharacter;
 
@@ -29,6 +31,8 @@ private:
 	float AimWalkSpeed;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	bool bFireButtonPressed;
+
+	FVector HitTarget;
 
 public:
 	UCombatComponent();
@@ -57,5 +61,7 @@ protected:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastFire();
+
+	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 		
 };
