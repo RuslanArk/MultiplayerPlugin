@@ -72,6 +72,7 @@
       <change beforePath="$PROJECT_DIR$/Content/Weapon/Projectiles/BP_Projectile.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Weapon/Projectiles/BP_Projectile.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Projectile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Projectile.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Projectile.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Projectile.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/ProjectileWeapon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/ProjectileWeapon.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22478,6 +22479,7 @@
       <workItem from="1654586911415" duration="3295000" />
       <workItem from="1654707471731" duration="2319000" />
       <workItem from="1654848817624" duration="1566000" />
+      <workItem from="1654861325709" duration="3553000" />
     </task>
     <servers />
   </component>

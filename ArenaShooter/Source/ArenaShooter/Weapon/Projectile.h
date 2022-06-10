@@ -7,6 +7,8 @@
 #include "Projectile.generated.h"
 
 class UBoxComponent;
+class UParticleSystem;
+class UParticleSystemComponent;
 class UProjectileMovementComponent;
 
 UCLASS()
@@ -20,6 +22,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	UProjectileMovementComponent* ProjectileMovementComponent;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* Tracer;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystemComponent* TracerComp;
 	
 public:
 	AProjectile();
