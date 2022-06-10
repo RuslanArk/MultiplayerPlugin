@@ -7,6 +7,7 @@
 #include "Projectile.generated.h"
 
 class UBoxComponent;
+class UProjectileMovementComponent;
 
 UCLASS()
 class ARENASHOOTER_API AProjectile : public AActor
@@ -16,6 +17,9 @@ class ARENASHOOTER_API AProjectile : public AActor
 private:
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* CollisionBox;
+
+	UPROPERTY(VisibleAnywhere)
+	UProjectileMovementComponent* ProjectileMovementComponent;
 	
 public:
 	AProjectile();
