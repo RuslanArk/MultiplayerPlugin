@@ -7,6 +7,7 @@
 #include "Casing.generated.h"
 
 class UStaticMeshComponent;
+class USoundCue;
 
 UCLASS()
 class ARENASHOOTER_API ACasing : public AActor
@@ -15,6 +16,12 @@ class ARENASHOOTER_API ACasing : public AActor
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* CasingMesh;
+
+	UPROPERTY(EditAnywhere)
+	float ShellEjectionImpulse;
+
+	UPROPERTY(EditAnywhere)
+	USoundCue* ShellSound;
 	
 public:
 	ACasing();
@@ -22,6 +29,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:
+	UFUNCTION()
+	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	
 
 };
