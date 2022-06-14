@@ -6,9 +6,11 @@
 #include "Animation/AnimationAsset.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "Net/UnrealNetwork.h"
 
 #include "ArenaShooter/Character/ArenaShooterCharacter.h"
+#include "Casing.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWeapon, All, All);
 
@@ -136,6 +138,22 @@ void AWeapon::Fire(const FVector& HitTarget)
 	if (FireAnimation)
 	{
 		WeaponMesh->PlayAnimation(FireAnimation, false);
+	}
+	
+	if (CasingClass)
+	{
+		if (const USkeletalMeshSocket* AmmoEjectSocket = WeaponMesh->GetSocketByName(FName("AmmoEject")))
+		{
+			const FTransform SocketTransform = AmmoEjectSocket->GetSocketTransform(GetWeaponMesh());
+			
+			if (UWorld* World = GetWorld())
+			{
+				World->SpawnActor<ACasing>(
+					CasingClass,
+					SocketTransform.GetLocation(),
+					SocketTransform.GetRotation().Rotator());
+			}
+		}
 	}
 }
 
