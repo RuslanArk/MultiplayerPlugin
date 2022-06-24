@@ -10,6 +10,7 @@ class UAnimationAsset;
 class USkeletalMeshComponent;
 class USphereComponent;
 class UWidgetComponent;
+class UTexture2D;
 
 class ACasing;
 
@@ -27,6 +28,25 @@ UCLASS()
 class ARENASHOOTER_API AWeapon : public AActor
 {
 	GENERATED_BODY()
+
+public:
+	/**
+	 * Textures for the weapon crosshairs
+	 */
+	UPROPERTY(EditAnywhere, Category = Crosshairs)
+	UTexture2D* CrosshairsCenter;
+
+	UPROPERTY(EditAnywhere, Category = Crosshairs)
+	UTexture2D* CrosshairsLeft;
+
+	UPROPERTY(EditAnywhere, Category = Crosshairs)
+	UTexture2D* CrosshairsRight;
+
+	UPROPERTY(EditAnywhere, Category = Crosshairs)
+	UTexture2D* CrosshairsBottom;
+
+	UPROPERTY(EditAnywhere, Category = Crosshairs)
+	UTexture2D* CrosshairsTop;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
@@ -46,6 +66,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ACasing> CasingClass;
+	
 	
 public:
 	AWeapon();

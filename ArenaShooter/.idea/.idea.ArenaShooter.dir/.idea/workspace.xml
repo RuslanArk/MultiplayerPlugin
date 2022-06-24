@@ -9,7 +9,10 @@
     <projectFile>../../../../UE_5_Source/Engine/Source/Programs/UnrealBuildTool/UnrealBuildTool.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f4e29e8-d78f-40ca-907a-4e50c3d96431" name="Changes" comment="" />
+    <list default="true" id="6f4e29e8-d78f-40ca-907a-4e50c3d96431" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ArenaShooter.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ArenaShooter.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -154,6 +157,8 @@
       <workItem from="1654324991846" duration="258000" />
       <workItem from="1655144315021" duration="11000" />
       <workItem from="1655209079373" duration="152000" />
+      <workItem from="1655382139855" duration="6000" />
+      <workItem from="1655382744596" duration="41000" />
     </task>
     <servers />
   </component>

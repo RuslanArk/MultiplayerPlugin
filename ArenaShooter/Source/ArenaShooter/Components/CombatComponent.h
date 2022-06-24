@@ -10,6 +10,8 @@
 
 class AWeapon;
 class AArenaShooterCharacter;
+class AArenaShooterPlayerController;
+class AArenaShooterHUD;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ARENASHOOTER_API UCombatComponent : public UActorComponent
@@ -19,6 +21,10 @@ class ARENASHOOTER_API UCombatComponent : public UActorComponent
 private:
 	UPROPERTY()
 	AArenaShooterCharacter* OwningCharacter = nullptr;
+	UPROPERTY()
+	AArenaShooterPlayerController* OwningController = nullptr;
+	UPROPERTY()
+	AArenaShooterHUD* OwningHUD = nullptr;
 
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	AWeapon* EquippedWeapon = nullptr;
@@ -63,5 +69,7 @@ protected:
 	void MulticastFire(const FVector_NetQuantize& TraceHitTarget);
 
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
+
+	void SetHUDCrosshairs(float DeltaTime);
 		
 };

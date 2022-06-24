@@ -4,6 +4,8 @@
 #include "CombatComponent.h"
 
 #include "ArenaShooter/Character/ArenaShooterCharacter.h"
+#include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
+#include "ArenaShooter/HUD/ArenaShooterHUD.h"
 #include "ArenaShooter/Weapon/Weapon.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -42,7 +44,7 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	
+	SetHUDCrosshairs(DeltaTime);
 }
 
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
@@ -142,4 +144,36 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 		Start,
 		End,
 		ECC_Visibility);
+}
+
+void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
+{
+	if (OwningCharacter == nullptr && OwningCharacter->Controller == nullptr) return;
+
+	OwningController = OwningController == nullptr ? Cast<AArenaShooterPlayerController>(OwningCharacter->Controller) : OwningController;
+	if (OwningController)
+	{
+		OwningHUD = OwningHUD == nullptr ? Cast<AArenaShooterHUD>(OwningController->GetHUD()) : OwningHUD;
+		if (OwningHUD)
+		{
+			FHUDPackage HUDPackage;
+			if (EquippedWeapon)
+			{				
+				HUDPackage.CrosshairBottom = EquippedWeapon->CrosshairsBottom;
+				HUDPackage.CrosshairCenter = EquippedWeapon->CrosshairsCenter;
+				HUDPackage.CrosshairLeft = EquippedWeapon->CrosshairsLeft;
+				HUDPackage.CrosshairRight = EquippedWeapon->CrosshairsRight;
+				HUDPackage.CrosshairTop = EquippedWeapon->CrosshairsTop;
+			}
+			else
+			{
+				HUDPackage.CrosshairBottom = nullptr;
+				HUDPackage.CrosshairCenter = nullptr;
+				HUDPackage.CrosshairLeft = nullptr;
+				HUDPackage.CrosshairRight = nullptr;
+				HUDPackage.CrosshairTop = nullptr;				
+			}
+			OwningHUD->SetHUDPackage(HUDPackage);
+		}
+	}
 }
