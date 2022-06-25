@@ -18,6 +18,8 @@ struct FHUDPackage
 	UTexture2D* CrosshairLeft;
 	UTexture2D* CrosshairTop;
 	UTexture2D* CrosshairBottom;
+
+	float CrosshairSpread;
 };
 
 UCLASS()
@@ -27,9 +29,15 @@ class ARENASHOOTER_API AArenaShooterHUD : public AHUD
 
 	FHUDPackage HUDPackage;
 
+	UPROPERTY(EditAnywhere)
+	float CrosshairsSpreadMax = 16.f;
+
 public:
 	virtual void DrawHUD() override;
 
 	FORCEINLINE void SetHUDPackage(const FHUDPackage Package) { HUDPackage = Package; }
+
+private:
+	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread);
 	
 };

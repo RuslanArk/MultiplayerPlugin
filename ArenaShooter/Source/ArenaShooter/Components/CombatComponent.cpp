@@ -20,6 +20,9 @@ UCombatComponent::UCombatComponent()
 
 	BaseWalkSpeed = 600.f;
 	AimWalkSpeed = 450.f;
+
+	CrosshairVelocityFactor = 0.0f;
+	CrosshairInAirFactor = 0.0f;
 }
 
 void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -173,6 +176,26 @@ void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 				HUDPackage.CrosshairRight = nullptr;
 				HUDPackage.CrosshairTop = nullptr;				
 			}
+			// Calculate Crosshair spread
+
+			// [0, 600] -> [0, 1]
+			FVector2D WalkSpeedRange(0.f, OwningCharacter->GetCharacterMovement()->MaxWalkSpeed);
+			FVector2D VelocityMultiplierRange { 0.f, 1.f };
+			FVector Velocity = OwningCharacter->GetVelocity();
+			Velocity.Z = 0.0f;
+			CrosshairVelocityFactor = FMath::GetMappedRangeValueClamped(WalkSpeedRange, VelocityMultiplierRange, Velocity.Size());
+
+			if (OwningCharacter->GetCharacterMovement()->IsFalling())
+			{
+				CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 2.25f, DeltaTime, 2.25f);
+			}
+			else
+			{
+				CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 0.0f, DeltaTime, 30.f);
+			}
+			
+			HUDPackage.CrosshairSpread = CrosshairVelocityFactor + CrosshairInAirFactor;
+			
 			OwningHUD->SetHUDPackage(HUDPackage);
 		}
 	}
