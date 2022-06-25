@@ -69,6 +69,8 @@ public:
 	FORCEINLINE float GetAOPitch() const { return AO_Pitch; }
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 
+	FVector GetHitTarget() const;
+
 protected:
 	virtual void BeginPlay() override;
 

@@ -57,6 +57,12 @@ void AArenaShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 	DOREPLIFETIME_CONDITION(AArenaShooterCharacter, OverlappingWeapon, COND_OwnerOnly);
 }
 
+FVector AArenaShooterCharacter::GetHitTarget() const
+{
+	if (!Combat) return FVector();
+	return Combat->HitTarget;
+}
+
 void AArenaShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
