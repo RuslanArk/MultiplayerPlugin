@@ -20,6 +20,7 @@ struct FHUDPackage
 	UTexture2D* CrosshairBottom;
 
 	float CrosshairSpread;
+	FLinearColor CrossHairsColor;
 };
 
 UCLASS()
@@ -38,6 +39,6 @@ public:
 	FORCEINLINE void SetHUDPackage(const FHUDPackage Package) { HUDPackage = Package; }
 
 private:
-	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread);
+	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread, FLinearColor CrosshairColor);
 	
 };

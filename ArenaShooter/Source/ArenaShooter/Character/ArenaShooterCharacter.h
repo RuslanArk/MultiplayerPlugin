@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 
 #include "ArenaShooter/ArenaShooterTypes/ArenaShooterEnums.h"
+#include "ArenaShooter/Interfaces/InteractWithCrosshairInterface.h"
 
 #include "ArenaShooterCharacter.generated.h"
 
@@ -18,7 +19,7 @@ class UCombatComponent;
 class AWeapon;
 
 UCLASS()
-class ARENASHOOTER_API AArenaShooterCharacter : public ACharacter
+class ARENASHOOTER_API AArenaShooterCharacter : public ACharacter, public IInteractWithCrosshairInterface
 {
 	GENERATED_BODY()
 
@@ -47,6 +48,9 @@ private:
 	FRotator StartingAimRotation;
 
 	ETurningInPlace TurningInPlace;
+
+	UPROPERTY(EditAnywhere)
+	float CameraThreshold = 200.f;
 	
 public:
 	AArenaShooterCharacter();
@@ -68,6 +72,7 @@ public:
 	FORCEINLINE float GetAOYaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() const { return AO_Pitch; }
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
+	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	FVector GetHitTarget() const;
 
@@ -96,6 +101,8 @@ private:
 	void ServerEquipButtonPressed();
 
 	void TurnInPlace(float DeltaTime);
+
+	void HideCameraIfCharacterClose();
 	
 };
 

@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "ArenaShooter/HUD/ArenaShooterHUD.h"
+
 #include "CombatComponent.generated.h"
 
 #define TRACE_LENGTH 80000.f;
@@ -46,6 +48,23 @@ private:
 	
 	float CrosshairVelocityFactor;
 	float CrosshairInAirFactor;
+	float CrosshairAimFactor;
+	float CrosshairShootingFactor;
+
+	FHUDPackage HUDPackage;
+
+	/*
+	 * Aiming and FOV
+	 */
+
+	// FOV when not aiming; set to the camera's base FOV in BeginPlay
+	float DefaultFOV;
+	float CurrentFOV;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float ZoomedFOV = 30.f;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float ZoomInterpSpeed = 20.f;
 
 public:
 	UCombatComponent();
@@ -78,5 +97,8 @@ protected:
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
 	void SetHUDCrosshairs(float DeltaTime);
+
+private:
+	void InterpFOV(float DeltaTime);
 		
 };
