@@ -9,6 +9,9 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
 
+#include "ArenaShooter/ArenaShooter.h"
+#include "ArenaShooter/Character/ArenaShooterCharacter.h"
+
 AProjectile::AProjectile()
 {
  	PrimaryActorTick.bCanEverTick = true;
@@ -21,6 +24,7 @@ AProjectile::AProjectile()
 	CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	CollisionBox->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	CollisionBox->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	CollisionBox->SetCollisionResponseToChannel(ECC_SkeletalMesh, ECR_Block);
 
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
 	ProjectileMovementComponent->bRotationFollowsVelocity = true;
@@ -72,6 +76,11 @@ void AProjectile::Destroyed()
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                         FVector NormalImpulse, const FHitResult& Hit)
 {
+	if (AArenaShooterCharacter* ASCharacter = Cast<AArenaShooterCharacter>(OtherActor))
+	{
+		ASCharacter->MulticastHit();
+	}
+	
 	Destroy();
 }
 

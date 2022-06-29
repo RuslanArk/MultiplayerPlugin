@@ -41,6 +41,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	UAnimMontage* FireWeaponMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	UAnimMontage* HitReactMontage;
 
 	float InterpAO_Yaw;
 	float AO_Yaw;
@@ -51,6 +54,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float CameraThreshold = 200.f;
+
+	bool bRotateRootBone;
 	
 public:
 	AArenaShooterCharacter();
@@ -73,8 +78,12 @@ public:
 	FORCEINLINE float GetAOPitch() const { return AO_Pitch; }
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }
 
 	FVector GetHitTarget() const;
+	
+	UFUNCTION(NetMulticast, Unreliable)
+	void MulticastHit();
 
 protected:
 	virtual void BeginPlay() override;
@@ -92,6 +101,9 @@ protected:
 	void FireButtonReleased();
 
 	void AimOffset(float DeltaTime);
+	void SimProxiesTurn();
+	
+	void PlayHitReactMontage();
 
 private:
 	UFUNCTION()

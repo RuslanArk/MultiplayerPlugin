@@ -3,6 +3,7 @@
 
 #include "ArenaShooterCharacter.h"
 
+#include "ArenaShooter/ArenaShooter.h"
 #include "ArenaShooter/Components/CombatComponent.h"
 #include "ArenaShooter/Weapon/Weapon.h"
 #include "Camera/CameraComponent.h"
@@ -44,6 +45,7 @@ AArenaShooterCharacter::AArenaShooterCharacter()
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionObjectType(ECC_SkeletalMesh);
 
 	TurningInPlace = ETurningInPlace::ETIP_NotTurning;
 
@@ -251,6 +253,17 @@ void AArenaShooterCharacter::AimOffset(float DeltaTime)
 	}
 }
 
+void AArenaShooterCharacter::SimProxiesTurn()
+{
+	if (!Combat || !Combat->EquippedWeapon) return;
+
+	
+}
+
+void AArenaShooterCharacter::MulticastHit_Implementation()
+{
+	PlayHitReactMontage();
+}
 
 void AArenaShooterCharacter::TurnInPlace(float DeltaTime)
 {
@@ -356,6 +369,19 @@ void AArenaShooterCharacter::PlayFireMontage(bool bAiming)
 	{
 		AnimInstance->Montage_Play(FireWeaponMontage);
 		FName SectionName = bAiming ? FName("RifleAim") : FName("RifleHip");
+		AnimInstance->Montage_JumpToSection(SectionName);
+	}
+}
+
+void AArenaShooterCharacter::PlayHitReactMontage()
+{
+	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && HitReactMontage)
+	{
+		AnimInstance->Montage_Play(HitReactMontage);
+		FName SectionName("FromLeft");
 		AnimInstance->Montage_JumpToSection(SectionName);
 	}
 }
