@@ -66,6 +66,14 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float ZoomInterpSpeed = 20.f;
 
+	/*
+	 * Automatic fire
+	 */
+
+	FTimerHandle FireTimer;
+	
+	bool bCanFire = true;
+
 public:
 	UCombatComponent();
 
@@ -85,6 +93,7 @@ protected:
 
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
+	void Fire();
 
 	void FireButtonPressed(bool bPressed);
 
@@ -100,5 +109,9 @@ protected:
 
 private:
 	void InterpFOV(float DeltaTime);
+
+	void StartFireTimer();
+	void FireTimerFinished();
 		
 };
+

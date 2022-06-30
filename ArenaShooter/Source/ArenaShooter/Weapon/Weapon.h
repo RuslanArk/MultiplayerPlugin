@@ -58,6 +58,15 @@ public:
 	UPROPERTY(EditAnywhere)
 	float ZoomInterpSpeed = 20.f;
 
+	/**
+	 * Automatic weapon
+	 */
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float FireDelay = 0.15f;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	bool bAutomaticWeapon = true;
+
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	USkeletalMeshComponent* WeaponMesh;
