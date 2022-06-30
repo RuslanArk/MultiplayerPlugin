@@ -58,6 +58,7 @@ void AArenaShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME_CONDITION(AArenaShooterCharacter, OverlappingWeapon, COND_OwnerOnly);
+	DOREPLIFETIME(AArenaShooterCharacter, Health);
 }
 
 FVector AArenaShooterCharacter::GetHitTarget() const
@@ -395,6 +396,11 @@ void AArenaShooterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 	{
 		LastWeapon->ShowPickupWidget(false);
 	}
+}
+
+void AArenaShooterCharacter::OnRep_Health()
+{
+	
 }
 
 void AArenaShooterCharacter::ServerEquipButtonPressed_Implementation()

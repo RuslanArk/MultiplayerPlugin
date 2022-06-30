@@ -3,6 +3,11 @@
 
 #include "ArenaShooterHUD.h"
 
+#include "Blueprint/UserWidget.h"
+#include "GameFramework/PlayerController.h"
+
+#include "ArenaShooter/HUD/CharacterOverlay.h"
+
 void AArenaShooterHUD::DrawHUD()
 {
 	Super::DrawHUD();
@@ -40,6 +45,24 @@ void AArenaShooterHUD::DrawHUD()
 			const FVector2D Spread {SpreadScaled, 0.f};
 			DrawCrosshair(HUDPackage.CrosshairRight, ViewportCenter, Spread, HUDPackage.CrossHairsColor);
 		}		
+	}
+}
+
+void AArenaShooterHUD::BeginPlay()
+{
+	Super::BeginPlay();
+
+	AddCharacterOverlay();
+}
+
+void AArenaShooterHUD::AddCharacterOverlay()
+{
+	if (!CharacterOverlayClass) return;
+	
+	if (APlayerController* PlayerController = GetOwningPlayerController())
+	{
+		CharacterOverlay = CreateWidget<UCharacterOverlay>(PlayerController, CharacterOverlayClass);
+		CharacterOverlay->AddToViewport();
 	}
 }
 

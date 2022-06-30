@@ -61,6 +61,15 @@ private:
 	float TimeSinceLastMovementReplication;
 	FRotator ProxyRotationLastFrame;
 	FRotator ProxyRotation;
+
+	/**
+	 * Player Health
+	 */
+
+	UPROPERTY(EditAnywhere, Category = "PlayerStats")
+	float MaxHealth = 100.f;
+	UPROPERTY(ReplicatedUsing = OnRep_Health, VisibleAnywhere, Category = "PlayerStats")
+	float Health = 100.f;
 	
 public:
 	AArenaShooterCharacter();
@@ -116,6 +125,8 @@ protected:
 private:
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
+	UFUNCTION()
+	void OnRep_Health();
 
 	UFUNCTION(Server, Reliable)
 	void ServerEquipButtonPressed();

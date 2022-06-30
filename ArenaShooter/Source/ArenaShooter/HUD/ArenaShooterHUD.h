@@ -7,6 +7,8 @@
 #include "ArenaShooterHUD.generated.h"
 
 class UTexture2D;
+class UCharacterOverlay;
+class UUserWidget;
 
 USTRUCT(BlueprintType)
 struct FHUDPackage
@@ -27,7 +29,13 @@ UCLASS()
 class ARENASHOOTER_API AArenaShooterHUD : public AHUD
 {
 	GENERATED_BODY()
-
+public:
+	UPROPERTY(EditAnywhere, Category = "PlayerStats")
+	TSubclassOf<UUserWidget> CharacterOverlayClass;
+	
+	UCharacterOverlay* CharacterOverlay;
+	
+private:
 	FHUDPackage HUDPackage;
 
 	UPROPERTY(EditAnywhere)
@@ -37,6 +45,10 @@ public:
 	virtual void DrawHUD() override;
 
 	FORCEINLINE void SetHUDPackage(const FHUDPackage Package) { HUDPackage = Package; }
+
+protected:
+	virtual void BeginPlay() override;
+	void AddCharacterOverlay();
 
 private:
 	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread, FLinearColor CrosshairColor);
