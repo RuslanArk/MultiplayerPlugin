@@ -15,6 +15,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UWidgetComponent;
 
+class AArenaShooterPlayerController;
 class UCombatComponent;
 class AWeapon;
 
@@ -70,6 +71,9 @@ private:
 	float MaxHealth = 100.f;
 	UPROPERTY(ReplicatedUsing = OnRep_Health, VisibleAnywhere, Category = "PlayerStats")
 	float Health = 100.f;
+
+	UPROPERTY(VisibleAnywhere)
+	AArenaShooterPlayerController* ASPlayerController = nullptr;
 	
 public:
 	AArenaShooterCharacter();

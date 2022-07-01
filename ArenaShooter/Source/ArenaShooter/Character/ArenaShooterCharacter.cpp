@@ -15,6 +15,7 @@
 #include "Net/UnrealNetwork.h"
 
 #include "ArenaShooterAnimInstance.h"
+#include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogArenaShooterChar, All, All);
 
@@ -78,7 +79,12 @@ void AArenaShooterCharacter::OnRep_ReplicatedMovement()
 void AArenaShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	ASPlayerController = Cast<AArenaShooterPlayerController>(GetController());
+	if (ASPlayerController)
+	{
+		ASPlayerController->SetHUDHealth(Health, MaxHealth);
+	}
 }
 
 void AArenaShooterCharacter::Tick(float DeltaTime)
