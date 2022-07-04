@@ -16,5 +16,6 @@ class ARENASHOOTER_API AArenaShooterGameMode : public AGameMode
 
 public:
 	virtual void PlayerEliminated(AArenaShooterCharacter* EliminatedCharacter, AArenaShooterPlayerController* VictimController, AArenaShooterPlayerController* AttackerController);
+	virtual void RequestRespawn(ACharacter* ElimedCharacter, AController* ElimedController);
 	
 };

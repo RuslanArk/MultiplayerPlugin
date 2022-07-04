@@ -13,6 +13,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "TimerManager.h"
 
 #include "ArenaShooterAnimInstance.h"
 #include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
@@ -23,6 +24,8 @@ DEFINE_LOG_CATEGORY_STATIC(LogArenaShooterChar, All, All);
 AArenaShooterCharacter::AArenaShooterCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	CameraBoom->SetupAttachment(GetMesh());
@@ -434,10 +437,24 @@ void AArenaShooterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, c
 	}	
 }
 
-void AArenaShooterCharacter::Elim_Implementation()
+void AArenaShooterCharacter::MulticastElim_Implementation()
 {
 	bElimed = true;
 	PlayElimMontage();
+}
+
+void AArenaShooterCharacter::Elim()
+{
+	MulticastElim();
+	GetWorldTimerManager().SetTimer(ElimTimer, this, &AArenaShooterCharacter::ElimTimerFinished, ElimDelay);
+}
+
+void AArenaShooterCharacter::ElimTimerFinished()
+{
+	if (AArenaShooterGameMode* ASGameMode = GetWorld()->GetAuthGameMode<AArenaShooterGameMode>())
+	{
+		ASGameMode->RequestRespawn(this, Controller);
+	}
 }
 
 void AArenaShooterCharacter::ServerEquipButtonPressed_Implementation()

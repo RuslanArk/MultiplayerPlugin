@@ -76,6 +76,9 @@ private:
 	float Health = 100.f;
 
 	bool bElimed = false;
+	FTimerHandle ElimTimer;
+	UPROPERTY(EditDefaultsOnly)
+	float ElimDelay = 3.f;
 
 	UPROPERTY(VisibleAnywhere)
 	AArenaShooterPlayerController* ASPlayerController = nullptr;
@@ -110,7 +113,10 @@ public:
 	virtual void OnRep_ReplicatedMovement() override;
 
 	UFUNCTION(NetMulticast, Reliable)
+	void MulticastElim();
+
 	void Elim();
+	void ElimTimerFinished();
 
 protected:
 	virtual void BeginPlay() override;
