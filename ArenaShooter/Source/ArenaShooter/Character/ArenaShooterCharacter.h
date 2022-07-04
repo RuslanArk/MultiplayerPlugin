@@ -45,6 +45,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	UAnimMontage* HitReactMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	UAnimMontage* ElimMontage;
 
 	float InterpAO_Yaw;
 	float AO_Yaw;
@@ -72,6 +75,8 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_Health, VisibleAnywhere, Category = "PlayerStats")
 	float Health = 100.f;
 
+	bool bElimed = false;
+
 	UPROPERTY(VisibleAnywhere)
 	AArenaShooterPlayerController* ASPlayerController = nullptr;
 	
@@ -91,19 +96,21 @@ public:
 
 	AWeapon* GetEquippedWeapon();
 	void PlayFireMontage(bool bAiming);
+	void PlayElimMontage();
 
 	FORCEINLINE float GetAOYaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() const { return AO_Pitch; }
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }
+	FORCEINLINE bool IsElimed() const { return bElimed; }
 
 	FVector GetHitTarget() const;
-	
-	UFUNCTION(NetMulticast, Unreliable)
-	void MulticastHit();
 
 	virtual void OnRep_ReplicatedMovement() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Elim();
 
 protected:
 	virtual void BeginPlay() override;
@@ -125,6 +132,11 @@ protected:
 	void SimProxiesTurn();
 	
 	void PlayHitReactMontage();
+
+	void UpdateHUDHealth();
+	
+	UFUNCTION()
+	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser);
 
 private:
 	UFUNCTION()

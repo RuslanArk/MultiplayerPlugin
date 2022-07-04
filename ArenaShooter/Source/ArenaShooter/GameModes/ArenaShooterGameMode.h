@@ -6,12 +6,15 @@
 #include "GameFramework/GameMode.h"
 #include "ArenaShooterGameMode.generated.h"
 
-/**
- * 
- */
+class AArenaShooterCharacter;
+class AArenaShooterPlayerController;
+
 UCLASS()
 class ARENASHOOTER_API AArenaShooterGameMode : public AGameMode
 {
 	GENERATED_BODY()
+
+public:
+	virtual void PlayerEliminated(AArenaShooterCharacter* EliminatedCharacter, AArenaShooterPlayerController* VictimController, AArenaShooterPlayerController* AttackerController);
 	
 };

@@ -16,6 +16,7 @@
 
 #include "ArenaShooterAnimInstance.h"
 #include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
+#include "ArenaShooter/GameModes/ArenaShooterGameMode.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogArenaShooterChar, All, All);
 
@@ -80,10 +81,11 @@ void AArenaShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ASPlayerController = Cast<AArenaShooterPlayerController>(GetController());
-	if (ASPlayerController)
+	UpdateHUDHealth();
+
+	if (HasAuthority())
 	{
-		ASPlayerController->SetHUDHealth(Health, MaxHealth);
+		OnTakeAnyDamage.AddDynamic(this, &AArenaShooterCharacter::ReceiveDamage);
 	}
 }
 
@@ -321,11 +323,6 @@ void AArenaShooterCharacter::SimProxiesTurn()
 	TurningInPlace = ETurningInPlace::ETIP_NotTurning;
 }
 
-void AArenaShooterCharacter::MulticastHit_Implementation()
-{
-	PlayHitReactMontage();
-}
-
 void AArenaShooterCharacter::TurnInPlace(float DeltaTime)
 {
 	if (AO_Yaw > 90.f)
@@ -406,7 +403,41 @@ void AArenaShooterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 
 void AArenaShooterCharacter::OnRep_Health()
 {
-	
+	UpdateHUDHealth();
+	PlayHitReactMontage();
+}
+
+void AArenaShooterCharacter::UpdateHUDHealth()
+{
+	ASPlayerController = ASPlayerController == nullptr ? Cast<AArenaShooterPlayerController>(GetController()) : ASPlayerController;
+	if (ASPlayerController)
+	{
+		ASPlayerController->SetHUDHealth(Health, MaxHealth);
+	}
+}
+
+void AArenaShooterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	AController* InstigatorController, AActor* DamageCauser)
+{
+	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
+	UpdateHUDHealth();
+	PlayHitReactMontage();
+
+	if (Health <= 0.0f)
+	{
+		if (AArenaShooterGameMode* ASGameMode = GetWorld()->GetAuthGameMode<AArenaShooterGameMode>())
+		{
+			ASPlayerController = ASPlayerController == nullptr ? Cast<AArenaShooterPlayerController>(Controller) : ASPlayerController = ASPlayerController;
+			AArenaShooterPlayerController* AttackerController = Cast<AArenaShooterPlayerController>(InstigatorController);
+			ASGameMode->PlayerEliminated(this, ASPlayerController, AttackerController);
+		}
+	}	
+}
+
+void AArenaShooterCharacter::Elim_Implementation()
+{
+	bElimed = true;
+	PlayElimMontage();
 }
 
 void AArenaShooterCharacter::ServerEquipButtonPressed_Implementation()
@@ -446,6 +477,15 @@ void AArenaShooterCharacter::PlayFireMontage(bool bAiming)
 	}
 }
 
+void AArenaShooterCharacter::PlayElimMontage()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && ElimMontage)
+	{
+		AnimInstance->Montage_Play(ElimMontage);
+	}
+}
+
 void AArenaShooterCharacter::PlayHitReactMontage()
 {
 	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
@@ -458,5 +498,4 @@ void AArenaShooterCharacter::PlayHitReactMontage()
 		AnimInstance->Montage_JumpToSection(SectionName);
 	}
 }
-
 

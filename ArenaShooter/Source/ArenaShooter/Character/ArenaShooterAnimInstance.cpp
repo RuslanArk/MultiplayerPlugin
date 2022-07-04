@@ -40,6 +40,7 @@ void UArenaShooterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsAiming = ArenaShooterCharacter->IsAiming();
 	TurningInPlace = ArenaShooterCharacter->GetTurningInPlace();
 	bRotateRootBone = ArenaShooterCharacter->ShouldRotateRootBone();
+	bElimed = ArenaShooterCharacter->IsElimed();
 
 	// Offset Yaw for strafing
 	FRotator AimRotation = ArenaShooterCharacter->GetBaseAimRotation();

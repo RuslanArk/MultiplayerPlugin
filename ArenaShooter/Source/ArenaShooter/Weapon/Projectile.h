@@ -35,6 +35,10 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	USoundCue* ImpactSound;
+
+protected:
+	UPROPERTY(EditAnywhere)
+	float Damage = 20.0f;
 	
 public:
 	AProjectile();
@@ -48,8 +52,6 @@ protected:
 
 	UFUNCTION()
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
-private:
 	
 
 };
