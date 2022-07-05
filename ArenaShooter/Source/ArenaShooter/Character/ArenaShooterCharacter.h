@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/TimelineComponent.h"
 #include "GameFramework/Character.h"
 
 #include "ArenaShooter/ArenaShooterTypes/ArenaShooterEnums.h"
@@ -82,6 +83,24 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	AArenaShooterPlayerController* ASPlayerController = nullptr;
+
+	/**
+	 * Dissolve effect
+	 */
+	
+	UPROPERTY(VisibleAnywhere)
+	UTimelineComponent* DissolveTimeline;
+	
+	FOnTimelineFloat DissolveTrack;
+
+	UPROPERTY(EditAnywhere)
+	UCurveFloat* DissolveCurve;
+	// Dynamic instance that we can change at runtime
+	UPROPERTY(VisibleAnywhere, Category = "Elim")
+	UMaterialInstanceDynamic* DynamicDissolveMaterialInstance;
+	// Material Instance set on the Blueprint, used with the dynamic material instance
+	UPROPERTY(EditAnywhere, Category = "Elim")
+	UMaterialInstance* DissolveMaterialInstance;
 	
 public:
 	AArenaShooterCharacter();
@@ -158,6 +177,10 @@ private:
 	void HideCameraIfCharacterClose();
 
 	float CalculateSpeed();
+
+	UFUNCTION()
+	void UpdateDissolveMaterial(float DissolveValue);
+	void StartDissolve();
 	
 };
 

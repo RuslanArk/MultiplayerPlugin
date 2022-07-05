@@ -56,6 +56,8 @@ AArenaShooterCharacter::AArenaShooterCharacter()
 
 	NetUpdateFrequency = 66.f;
 	MinNetUpdateFrequency = 33.f;
+
+	DissolveTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("Dissolve Timeline Component"));
 }
 
 void AArenaShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -441,6 +443,17 @@ void AArenaShooterCharacter::MulticastElim_Implementation()
 {
 	bElimed = true;
 	PlayElimMontage();
+
+	if (DissolveMaterialInstance)
+	{
+		DynamicDissolveMaterialInstance = UMaterialInstanceDynamic::Create(DissolveMaterialInstance, this);
+
+		GetMesh()->SetMaterial(0, DynamicDissolveMaterialInstance);
+		DynamicDissolveMaterialInstance->SetScalarParameterValue("Dissolve", 0.55f);
+		DynamicDissolveMaterialInstance->SetScalarParameterValue("Glow", 100.f);		
+	}
+	// Starts playing timeline
+	StartDissolve();
 }
 
 void AArenaShooterCharacter::Elim()
@@ -513,6 +526,24 @@ void AArenaShooterCharacter::PlayHitReactMontage()
 		AnimInstance->Montage_Play(HitReactMontage);
 		FName SectionName("FromLeft");
 		AnimInstance->Montage_JumpToSection(SectionName);
+	}
+}
+
+void AArenaShooterCharacter::UpdateDissolveMaterial(float DissolveValue)
+{
+	if (DynamicDissolveMaterialInstance)
+	{
+		DynamicDissolveMaterialInstance->SetScalarParameterValue("Dissolve", DissolveValue);
+	}
+}
+
+void AArenaShooterCharacter::StartDissolve()
+{
+	DissolveTrack.BindDynamic(this, &AArenaShooterCharacter::UpdateDissolveMaterial);
+	if (DissolveTimeline && DissolveCurve)
+	{
+		DissolveTimeline->AddInterpFloat(DissolveCurve, DissolveTrack);
+		DissolveTimeline->Play();
 	}
 }
 
