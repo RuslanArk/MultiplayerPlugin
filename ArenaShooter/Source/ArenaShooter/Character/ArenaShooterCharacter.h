@@ -14,9 +14,11 @@
 class UAnimMontage;
 class UCameraComponent;
 class USpringArmComponent;
+class USoundCue;
 class UWidgetComponent;
 
 class AArenaShooterPlayerController;
+class AArenaShooterPlayerState;
 class UCombatComponent;
 class AWeapon;
 
@@ -102,6 +104,18 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Elim")
 	UMaterialInstance* DissolveMaterialInstance;
 	
+	/**
+    * Elim bot
+    */
+    UPROPERTY(EditAnywhere)
+    UParticleSystem* ElimBotEffect;
+    UPROPERTY(VisibleAnywhere)
+    UParticleSystemComponent* ElimBotComponent;
+	UPROPERTY(EditAnywhere)
+	USoundCue* ElimBotSound;
+
+	AArenaShooterPlayerState* CharacterPlayerState;
+	
 public:
 	AArenaShooterCharacter();
 
@@ -110,6 +124,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PostInitializeComponents() override;
+	virtual void Destroyed() override;
 	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 
@@ -126,6 +141,8 @@ public:
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }
 	FORCEINLINE bool IsElimed() const { return bElimed; }
+	FORCEINLINE float GetHealth() const { return Health; }
+	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
 
 	FVector GetHitTarget() const;
 
@@ -159,6 +176,8 @@ protected:
 	void PlayHitReactMontage();
 
 	void UpdateHUDHealth();
+	// Poll for any relevant classes and initialize our HUD
+	void PollInit();
 	
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser);

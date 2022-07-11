@@ -11,13 +11,17 @@
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "TimerManager.h"
+#include "Sound/SoundCue.h"
+#include "Particles/ParticleSystemComponent.h"
 
 #include "ArenaShooterAnimInstance.h"
 #include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
 #include "ArenaShooter/GameModes/ArenaShooterGameMode.h"
+#include "ArenaShooter/PlayerState/ArenaShooterPlayerState.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogArenaShooterChar, All, All);
 
@@ -113,6 +117,7 @@ void AArenaShooterCharacter::Tick(float DeltaTime)
 	}
 	
 	HideCameraIfCharacterClose();
+	PollInit();
 }
 
 void AArenaShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -156,6 +161,16 @@ void AArenaShooterCharacter::PostInitializeComponents()
 	if (Combat)
 	{
 		Combat->OwningCharacter = this;
+	}
+}
+
+void AArenaShooterCharacter::Destroyed()
+{
+	Super::Destroyed();
+
+	if (ElimBotComponent)
+	{
+		ElimBotComponent->DestroyComponent();
 	}
 }
 
@@ -307,8 +322,6 @@ void AArenaShooterCharacter::SimProxiesTurn()
 	ProxyRotation = GetActorRotation();
 	ProxyYaw = UKismetMathLibrary::NormalizedDeltaRotator(ProxyRotation, ProxyRotationLastFrame).Yaw;
 
-	UE_LOG(LogTemp, Warning, TEXT("ProxyYaw : %f"), ProxyYaw);
-
 	if (FMath::Abs(ProxyYaw) > TurnThreshold)
 	{
 		if (ProxyYaw > TurnThreshold)
@@ -421,8 +434,20 @@ void AArenaShooterCharacter::UpdateHUDHealth()
 	}
 }
 
+void AArenaShooterCharacter::PollInit()
+{
+	if (!CharacterPlayerState)
+	{
+		CharacterPlayerState = GetPlayerState<AArenaShooterPlayerState>();
+		if (CharacterPlayerState)
+		{
+			CharacterPlayerState->AddToScore(0.0f);
+		}
+	}
+}
+
 void AArenaShooterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
-	AController* InstigatorController, AActor* DamageCauser)
+                                           AController* InstigatorController, AActor* DamageCauser)
 {
 	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
 	UpdateHUDHealth();
@@ -432,7 +457,7 @@ void AArenaShooterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, c
 	{
 		if (AArenaShooterGameMode* ASGameMode = GetWorld()->GetAuthGameMode<AArenaShooterGameMode>())
 		{
-			ASPlayerController = ASPlayerController == nullptr ? Cast<AArenaShooterPlayerController>(Controller) : ASPlayerController = ASPlayerController;
+			ASPlayerController = ASPlayerController == nullptr ? Cast<AArenaShooterPlayerController>(Controller) : ASPlayerController;
 			AArenaShooterPlayerController* AttackerController = Cast<AArenaShooterPlayerController>(InstigatorController);
 			ASGameMode->PlayerEliminated(this, ASPlayerController, AttackerController);
 		}
@@ -454,10 +479,40 @@ void AArenaShooterCharacter::MulticastElim_Implementation()
 	}
 	// Starts playing timeline
 	StartDissolve();
+
+	GetCharacterMovement()->DisableMovement();
+	GetCharacterMovement()->StopMovementImmediately();
+	if (ASPlayerController)
+	{
+		DisableInput(ASPlayerController);
+	}
+	// disable collision
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// Spawn elim bot
+	if (ElimBotEffect)
+	{
+		FVector ElimBotSpawnPoint(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 200.f);
+		ElimBotComponent = UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			ElimBotEffect,
+			ElimBotSpawnPoint,
+			GetActorRotation());
+	}
+
+	if (ElimBotSound)
+	{
+		UGameplayStatics::SpawnSoundAtLocation(this, ElimBotSound, GetActorLocation());
+	}
 }
 
 void AArenaShooterCharacter::Elim()
 {
+	if (Combat && Combat->EquippedWeapon)
+	{
+		Combat->EquippedWeapon->Dropped();
+	}
 	MulticastElim();
 	GetWorldTimerManager().SetTimer(ElimTimer, this, &AArenaShooterCharacter::ElimTimerFinished, ElimDelay);
 }

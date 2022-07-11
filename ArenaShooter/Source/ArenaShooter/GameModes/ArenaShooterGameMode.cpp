@@ -3,18 +3,26 @@
 
 #include "ArenaShooterGameMode.h"
 
-#include "ArenaShooter/Character/ArenaShooterCharacter.h"
-#include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
+
+#include "ArenaShooter/Character/ArenaShooterCharacter.h"
+#include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
+#include "ArenaShooter/PlayerState/ArenaShooterPlayerState.h"
 
 void AArenaShooterGameMode::PlayerEliminated(AArenaShooterCharacter* EliminatedCharacter,
                                              AArenaShooterPlayerController* VictimController, AArenaShooterPlayerController* AttackerController)
 {
+	AArenaShooterPlayerState* AttackerPlayerState = AttackerController ? Cast<AArenaShooterPlayerState>(AttackerController->PlayerState) : nullptr;
+	AArenaShooterPlayerState* VictimPlayerState = VictimController ? Cast<AArenaShooterPlayerState>(VictimController->PlayerState) : nullptr;
+	if (AttackerPlayerState && AttackerPlayerState != VictimPlayerState)
+	{
+		AttackerPlayerState->AddToScore(1.0f);
+	}
+	
 	if (EliminatedCharacter)
 	{
 		EliminatedCharacter->Elim();
-		
 	}
 }
 

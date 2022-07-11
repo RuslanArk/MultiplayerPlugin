@@ -174,20 +174,25 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	if (!OwningCharacter || !WeaponToEquip) return;
 	EquippedWeapon = WeaponToEquip;
 
+	EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
 	if (const USkeletalMeshSocket* HandSocket = OwningCharacter->GetMesh()->GetSocketByName(FName("RightHandSocket")))
 	{
-		HandSocket->AttachActor(EquippedWeapon, OwningCharacter->GetMesh());
-		EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
-		EquippedWeapon->SetOwner(OwningCharacter);
-		OwningCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
-		OwningCharacter->bUseControllerRotationYaw = true;
+		HandSocket->AttachActor(EquippedWeapon, OwningCharacter->GetMesh());		
 	}
+	EquippedWeapon->SetOwner(OwningCharacter);
+	OwningCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
+	OwningCharacter->bUseControllerRotationYaw = true;
 }
 
 void UCombatComponent::OnRep_EquippedWeapon()
 {
 	if (EquippedWeapon && OwningCharacter)
 	{
+		EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
+		if (const USkeletalMeshSocket* HandSocket = OwningCharacter->GetMesh()->GetSocketByName(FName("RightHandSocket")))
+		{
+			HandSocket->AttachActor(EquippedWeapon, OwningCharacter->GetMesh());			
+		}
 		OwningCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 		OwningCharacter->bUseControllerRotationYaw = true;
 	}
