@@ -15,13 +15,22 @@ class ARENASHOOTER_API AArenaShooterPlayerState : public APlayerState
 	GENERATED_BODY()
 
 	UPROPERTY()
-	AArenaShooterCharacter* Character;
+	AArenaShooterCharacter* Character = nullptr;
 	UPROPERTY()
-	AArenaShooterPlayerController* Controller;
+	AArenaShooterPlayerController* Controller = nullptr;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Defeats)
+	int32 Defeats = 0;
 
 public:
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	virtual void OnRep_Score() override;
+	UFUNCTION()
+	virtual void OnRep_Defeats();
 
 	void AddToScore(float ScoreAmount);
+	void AddToDefeats(int32 DefeatsAmount);
+
 	
 };

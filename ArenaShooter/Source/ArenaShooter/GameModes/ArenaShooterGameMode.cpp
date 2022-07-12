@@ -19,6 +19,11 @@ void AArenaShooterGameMode::PlayerEliminated(AArenaShooterCharacter* EliminatedC
 	{
 		AttackerPlayerState->AddToScore(1.0f);
 	}
+
+	if (VictimPlayerState)
+	{
+		VictimPlayerState->AddToDefeats(1);
+	}
 	
 	if (EliminatedCharacter)
 	{

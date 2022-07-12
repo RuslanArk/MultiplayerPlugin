@@ -29,28 +29,28 @@ class ARENASHOOTER_API AArenaShooterCharacter : public ACharacter, public IInter
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	USpringArmComponent* CameraBoom;
+	USpringArmComponent* CameraBoom = nullptr;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	UCameraComponent* FollowCamera;
+	UCameraComponent* FollowCamera = nullptr;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
-	UWidgetComponent* OverheadWidget;
+	UWidgetComponent* OverheadWidget = nullptr;
 
 	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
-	AWeapon* OverlappingWeapon;
+	AWeapon* OverlappingWeapon = nullptr;
 
 	UPROPERTY(VisibleAnywhere)
-	UCombatComponent* Combat;
+	UCombatComponent* Combat = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	UAnimMontage* FireWeaponMontage;
+	UAnimMontage* FireWeaponMontage = nullptr;
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	UAnimMontage* HitReactMontage;
+	UAnimMontage* HitReactMontage = nullptr;
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	UAnimMontage* ElimMontage;
+	UAnimMontage* ElimMontage = nullptr;
 
 	float InterpAO_Yaw;
 	float AO_Yaw;
@@ -91,30 +91,31 @@ private:
 	 */
 	
 	UPROPERTY(VisibleAnywhere)
-	UTimelineComponent* DissolveTimeline;
+	UTimelineComponent* DissolveTimeline = nullptr;
 	
 	FOnTimelineFloat DissolveTrack;
 
 	UPROPERTY(EditAnywhere)
-	UCurveFloat* DissolveCurve;
+	UCurveFloat* DissolveCurve = nullptr;
 	// Dynamic instance that we can change at runtime
 	UPROPERTY(VisibleAnywhere, Category = "Elim")
-	UMaterialInstanceDynamic* DynamicDissolveMaterialInstance;
+	UMaterialInstanceDynamic* DynamicDissolveMaterialInstance = nullptr;
 	// Material Instance set on the Blueprint, used with the dynamic material instance
 	UPROPERTY(EditAnywhere, Category = "Elim")
-	UMaterialInstance* DissolveMaterialInstance;
+	UMaterialInstance* DissolveMaterialInstance = nullptr;
 	
 	/**
     * Elim bot
     */
     UPROPERTY(EditAnywhere)
-    UParticleSystem* ElimBotEffect;
+    UParticleSystem* ElimBotEffect = nullptr;
     UPROPERTY(VisibleAnywhere)
-    UParticleSystemComponent* ElimBotComponent;
+    UParticleSystemComponent* ElimBotComponent = nullptr;
 	UPROPERTY(EditAnywhere)
-	USoundCue* ElimBotSound;
+	USoundCue* ElimBotSound = nullptr;
 
-	AArenaShooterPlayerState* CharacterPlayerState;
+	UPROPERTY()
+	AArenaShooterPlayerState* CharacterPlayerState = nullptr;
 	
 public:
 	AArenaShooterCharacter();

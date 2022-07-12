@@ -69,20 +69,15 @@
   <component name="ChangeListManager">
     <list default="true" id="a45807af-f75e-49b2-9dbd-2233479e25f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/Curves/DissolveCurve.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/Curves/DissolveCurve.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Character/Animations/ABP_ArenaShooterChar.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Character/Animations/ABP_ArenaShooterChar.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Character/BP_ArenaShooterCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Character/BP_ArenaShooterCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/GameModes/BP_ArenaShooterGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GameModes/BP_ArenaShooterGameMode.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/HUD/WBP_CharacterOverlay.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/HUD/WBP_CharacterOverlay.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/GameModes/ArenaShooterGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/GameModes/ArenaShooterGameMode.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/HUD/CharacterOverlay.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/HUD/CharacterOverlay.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Weapon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Weapon.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Weapon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Weapon.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerState/ArenaShooterPlayerState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerState/ArenaShooterPlayerState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerState/ArenaShooterPlayerState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerState/ArenaShooterPlayerState.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22539,6 +22534,9 @@
       <workItem from="1657257098340" duration="1716000" />
       <workItem from="1657282015240" duration="1198000" />
       <workItem from="1657285098341" duration="7080000" />
+      <workItem from="1657542084533" duration="3080000" />
+      <workItem from="1657548240618" duration="695000" />
+      <workItem from="1657549005542" duration="717000" />
     </task>
     <servers />
   </component>

@@ -442,6 +442,7 @@ void AArenaShooterCharacter::PollInit()
 		if (CharacterPlayerState)
 		{
 			CharacterPlayerState->AddToScore(0.0f);
+			CharacterPlayerState->AddToDefeats(0);
 		}
 	}
 }
