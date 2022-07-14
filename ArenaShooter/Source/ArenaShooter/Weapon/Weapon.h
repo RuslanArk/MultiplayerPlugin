@@ -12,6 +12,8 @@ class USphereComponent;
 class UWidgetComponent;
 class UTexture2D;
 
+class AArenaShooterCharacter;
+class AArenaShooterPlayerController;
 class ACasing;
 
 UENUM(BlueprintType)
@@ -84,13 +86,28 @@ private:
 	UAnimationAsset* FireAnimation;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<ACasing> CasingClass;	
+	TSubclassOf<ACasing> CasingClass;
+
+	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Ammo)
+	int32 Ammo;
+	
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"))
+	int32 MagCapacity;
+
+	UPROPERTY()
+	AArenaShooterCharacter* ASOwnerCharacter = nullptr;
+
+	UPROPERTY()
+	AArenaShooterPlayerController* ASOwnerController = nullptr;
 	
 public:
 	AWeapon();
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void OnRep_Owner() override;
+
+	void SetHUDAmmo();
 	
 	void ShowPickupWidget(bool bShowWidget);
 	void SetWeaponState(EWeaponState NewWeaponState);
@@ -113,6 +130,11 @@ protected:
 private:
 	UFUNCTION()
 	void OnRep_WeaponState();
+
+	UFUNCTION()
+	void OnRep_Ammo();
+
+	void SpendRound();
 	
 };
 

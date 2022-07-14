@@ -65,6 +65,21 @@ void AArenaShooterPlayerController::SetHUDDefeats(int32 Defeats)
 	}
 }
 
+void AArenaShooterPlayerController::SetHUDWeaponAmmo(int32 Ammo)
+{
+	ArenaShooterHUD = ArenaShooterHUD == nullptr ? Cast<AArenaShooterHUD>(GetHUD()) : ArenaShooterHUD;
+
+	const bool bHUDValid = ArenaShooterHUD &&
+		ArenaShooterHUD->CharacterOverlay &&
+		ArenaShooterHUD->CharacterOverlay->WeaponAmmoAmount;
+
+	if (bHUDValid)
+	{
+		FString AmmoText = FString::Printf(TEXT("%d"), Ammo);
+		ArenaShooterHUD->CharacterOverlay->WeaponAmmoAmount->SetText(FText::FromString(AmmoText));
+	}
+}
+
 void AArenaShooterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);

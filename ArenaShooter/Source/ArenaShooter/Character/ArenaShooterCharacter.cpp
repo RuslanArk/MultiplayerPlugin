@@ -467,6 +467,10 @@ void AArenaShooterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, c
 
 void AArenaShooterCharacter::MulticastElim_Implementation()
 {
+	if (ASPlayerController)
+	{
+		ASPlayerController->SetHUDWeaponAmmo(0);
+	}
 	bElimed = true;
 	PlayElimMontage();
 

@@ -172,14 +172,19 @@ void UCombatComponent::InterpFOV(float DeltaTime)
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 {
 	if (!OwningCharacter || !WeaponToEquip) return;
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->Dropped();
+	}
 	EquippedWeapon = WeaponToEquip;
-
 	EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
 	if (const USkeletalMeshSocket* HandSocket = OwningCharacter->GetMesh()->GetSocketByName(FName("RightHandSocket")))
 	{
 		HandSocket->AttachActor(EquippedWeapon, OwningCharacter->GetMesh());		
 	}
 	EquippedWeapon->SetOwner(OwningCharacter);
+	EquippedWeapon->SetHUDAmmo();
+	
 	OwningCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	OwningCharacter->bUseControllerRotationYaw = true;
 }
