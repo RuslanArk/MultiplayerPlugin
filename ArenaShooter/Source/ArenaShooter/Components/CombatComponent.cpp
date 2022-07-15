@@ -48,6 +48,11 @@ void UCombatComponent::BeginPlay()
 			CurrentFOV = DefaultFOV;
 		}
 	}
+
+	if (OwningCharacter->HasAuthority())
+	{
+		InitializeCarriedAmmo();
+	}
 }
 
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -153,7 +158,11 @@ void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 
 void UCombatComponent::OnRep_CarriedAmmo()
 {
-	
+	OwningController = OwningController == nullptr ? Cast<AArenaShooterPlayerController>(OwningCharacter->GetController()) : OwningController;
+	if (OwningController)
+	{
+		OwningController->SetHUDCarriedAmmo(CarriedAmmo);
+	}
 }
 
 void UCombatComponent::InterpFOV(float DeltaTime)
@@ -191,6 +200,16 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	EquippedWeapon->SetOwner(OwningCharacter);
 	EquippedWeapon->SetHUDAmmo();
 	
+	if (CarriedAmmoMap.Contains(EquippedWeapon->GetWeaponType()))
+	{
+		CarriedAmmo = CarriedAmmoMap[EquippedWeapon->GetWeaponType()];
+	}
+	
+	OwningController = OwningController == nullptr ? Cast<AArenaShooterPlayerController>(OwningCharacter->GetController()) : OwningController;
+	if (OwningController)
+	{
+		OwningController->SetHUDCarriedAmmo(CarriedAmmo);
+	}
 	OwningCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	OwningCharacter->bUseControllerRotationYaw = true;
 }
@@ -249,6 +268,11 @@ bool UCombatComponent::CanFire()
 {
 	if (EquippedWeapon == nullptr) return false;
 	return !EquippedWeapon->IsEmpty() || !bCanFire;
+}
+
+void UCombatComponent::InitializeCarriedAmmo()
+{
+	CarriedAmmoMap.Emplace(EWeaponType::EWT_AssaultRifle, StartingARAmmo);
 }
 
 void UCombatComponent::FireButtonPressed(bool bPressed)

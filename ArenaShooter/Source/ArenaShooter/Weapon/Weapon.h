@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+
+#include "WeaponTypes.h"
+
 #include "Weapon.generated.h"
 
 class UAnimationAsset;
@@ -99,6 +102,9 @@ private:
 
 	UPROPERTY()
 	AArenaShooterPlayerController* ASOwnerController = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	EWeaponType WeaponType;
 	
 public:
 	AWeapon();
@@ -120,6 +126,7 @@ public:
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
 	FORCEINLINE float GetZoomedFOV() const { return ZoomedFOV; }
 	FORCEINLINE float GetZoomInterpSpeed() const { return ZoomInterpSpeed; }
+	FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType; }
 
 protected:
 	virtual void BeginPlay() override;

@@ -77,6 +77,9 @@ private:
 	// CarriedAmmo for currently equipped weapon
 	UPROPERTY(ReplicatedUsing = OnRep_CarriedAmmo)
 	int32 CarriedAmmo;
+	
+	UPROPERTY(EditAnywhere)
+	int32 StartingARAmmo = 30;
 
 	TMap<EWeaponType, int32> CarriedAmmoMap;
 
@@ -123,6 +126,8 @@ private:
 	void FireTimerFinished();
 
 	bool CanFire();
+
+	void InitializeCarriedAmmo();
 		
 };
 
