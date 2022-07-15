@@ -69,13 +69,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a45807af-f75e-49b2-9dbd-2233479e25f9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/WeaponTypes.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/HUD/WBP_CharacterOverlay.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/HUD/WBP_CharacterOverlay.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Levels/ArenaShooterMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/ArenaShooterMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Weapon/BP_AssaultRifle.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Weapon/BP_AssaultRifle.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/HUD/CharacterOverlay.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/HUD/CharacterOverlay.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.h" afterDir="false" />
@@ -22913,7 +22911,9 @@
       <workItem from="1657694854024" duration="1532000" />
       <workItem from="1657700275414" duration="3043000" />
       <workItem from="1657712454478" duration="1474000" />
-      <workItem from="1657775330051" duration="2837000" />
+      <workItem from="1657775330051" duration="3429000" />
+      <workItem from="1657782893059" duration="2666000" />
+      <workItem from="1657798022493" duration="1892000" />
     </task>
     <servers />
   </component>

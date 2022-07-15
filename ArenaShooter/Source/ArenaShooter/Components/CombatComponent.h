@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "ArenaShooter/HUD/ArenaShooterHUD.h"
+#include "ArenaShooter/Weapon/WeaponTypes.h"
 
 #include "CombatComponent.generated.h"
 
@@ -73,6 +74,11 @@ private:
 	FTimerHandle FireTimer;
 	
 	bool bCanFire = true;
+	// CarriedAmmo for currently equipped weapon
+	UPROPERTY(ReplicatedUsing = OnRep_CarriedAmmo)
+	int32 CarriedAmmo;
+
+	TMap<EWeaponType, int32> CarriedAmmoMap;
 
 public:
 	UCombatComponent();
@@ -108,10 +114,15 @@ protected:
 	void SetHUDCrosshairs(float DeltaTime);
 
 private:
+	UFUNCTION()
+	void OnRep_CarriedAmmo();
+	
 	void InterpFOV(float DeltaTime);
 
 	void StartFireTimer();
 	void FireTimerFinished();
+
+	bool CanFire();
 		
 };
 

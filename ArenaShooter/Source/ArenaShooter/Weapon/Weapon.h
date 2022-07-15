@@ -113,6 +113,8 @@ public:
 	void SetWeaponState(EWeaponState NewWeaponState);
 	virtual void Fire(const FVector& HitTarget);
 	void Dropped();
+
+	bool IsEmpty();
 	
 	FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
