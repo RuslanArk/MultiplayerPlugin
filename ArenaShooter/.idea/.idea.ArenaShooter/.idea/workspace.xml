@@ -70,10 +70,16 @@
   <component name="ChangeListManager">
     <list default="true" id="a45807af-f75e-49b2-9dbd-2233479e25f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Animations/Reload_Rifle_Hip.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Animations/Reload_Rifle_Ironsights.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/Animations/Retargeted/AnimStarterPack/Reload_Rifle_Hip_Retargeted.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Character/BP_ArenaShooterCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Character/BP_ArenaShooterCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/External/LearningKit_Games/Assets/Characters/Character/Mesh/SK_EpicCharacter_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/External/LearningKit_Games/Assets/Characters/Character/Mesh/SK_EpicCharacter_Skeleton.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Weapon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Weapon.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22909,7 +22915,8 @@
       <workItem from="1657775330051" duration="3429000" />
       <workItem from="1657782893059" duration="2666000" />
       <workItem from="1657798022493" duration="1892000" />
-      <workItem from="1657861859822" duration="2331000" />
+      <workItem from="1657861859822" duration="2622000" />
+      <workItem from="1657973685646" duration="3495000" />
     </task>
     <servers />
   </component>

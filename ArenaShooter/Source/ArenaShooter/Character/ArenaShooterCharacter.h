@@ -43,6 +43,10 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UCombatComponent* Combat = nullptr;
 
+	/**
+	 * Animation montages
+	 */
+	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	UAnimMontage* FireWeaponMontage = nullptr;
 	
@@ -51,6 +55,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	UAnimMontage* ElimMontage = nullptr;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	UAnimMontage* ReloadMontage = nullptr;
 
 	float InterpAO_Yaw;
 	float AO_Yaw;
@@ -135,6 +142,7 @@ public:
 	AWeapon* GetEquippedWeapon();
 	void PlayFireMontage(bool bAiming);
 	void PlayElimMontage();
+	void PlayReloadMontage();
 
 	FORCEINLINE float GetAOYaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() const { return AO_Pitch; }
@@ -165,6 +173,7 @@ protected:
 	void LookUp(float Value);
 	void EquipButtonPressed();
 	void CrouchButtonPressed();
+	void ReloadButtonPressed();
 	void AimButtonPressed();
 	void AimButtonReleased();
 	void FireButtonPressed();

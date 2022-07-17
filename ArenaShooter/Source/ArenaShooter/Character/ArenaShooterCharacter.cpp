@@ -22,6 +22,7 @@
 #include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
 #include "ArenaShooter/GameModes/ArenaShooterGameMode.h"
 #include "ArenaShooter/PlayerState/ArenaShooterPlayerState.h"
+#include "ArenaShooter/Weapon/WeaponTypes.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogArenaShooterChar, All, All);
 
@@ -134,6 +135,7 @@ void AArenaShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AArenaShooterCharacter::AimButtonReleased);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AArenaShooterCharacter::FireButtonPressed);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AArenaShooterCharacter::FireButtonReleased);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AArenaShooterCharacter::ReloadButtonPressed);
 	
 	PlayerInputComponent->BindAxis("MoveForward", this, &AArenaShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AArenaShooterCharacter::MoveRight);
@@ -229,6 +231,14 @@ void AArenaShooterCharacter::CrouchButtonPressed()
 	{
 		Crouch();
 	}	
+}
+
+void AArenaShooterCharacter::ReloadButtonPressed()
+{
+	if (Combat)
+	{
+		Combat->Reload();
+	}
 }
 
 void AArenaShooterCharacter::AimButtonPressed()
@@ -563,6 +573,25 @@ void AArenaShooterCharacter::PlayFireMontage(bool bAiming)
 	{
 		AnimInstance->Montage_Play(FireWeaponMontage);
 		FName SectionName = bAiming ? FName("RifleAim") : FName("RifleHip");
+		AnimInstance->Montage_JumpToSection(SectionName);
+	}
+}
+
+void AArenaShooterCharacter::PlayReloadMontage()
+{
+	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
+	
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && ReloadMontage)
+	{
+		AnimInstance->Montage_Play(ReloadMontage);
+		FName SectionName;
+		switch (Combat->EquippedWeapon->GetWeaponType())
+		{
+		case EWeaponType::EWT_AssaultRifle:
+			SectionName = "Rifle";
+			break;
+		}
 		AnimInstance->Montage_JumpToSection(SectionName);
 	}
 }
