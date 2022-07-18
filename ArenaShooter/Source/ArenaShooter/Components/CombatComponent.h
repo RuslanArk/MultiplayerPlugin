@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "ArenaShooter/HUD/ArenaShooterHUD.h"
 #include "ArenaShooter/Weapon/WeaponTypes.h"
+#include "ArenaShooter/ArenaShooterTypes/CombatState.h"
 
 #include "CombatComponent.generated.h"
 
@@ -42,6 +43,9 @@ private:
 	bool bFireButtonPressed;
 
 	FVector HitTarget;
+
+	UPROPERTY(ReplicatedUsing = OnRep_CombatState)
+	ECombatState CombatState = ECombatState::ECS_Unoccupied;
 
 	/*
 	 * HUD and Crosshairs
@@ -93,6 +97,14 @@ public:
 	void EquipWeapon(AWeapon* WeaponToEquip);
 	void Reload();
 
+	UFUNCTION(BlueprintCallable)
+	void FinishReloading();
+
+	UFUNCTION()
+	void OnRep_CombatState();
+
+	
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -115,6 +127,8 @@ protected:
 
 	UFUNCTION(Server, Reliable)
 	void ServerReload();
+	
+	void HandleReload();
 
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
@@ -135,4 +149,3 @@ private:
 	void InitializeCarriedAmmo();
 		
 };
-

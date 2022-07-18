@@ -558,12 +558,6 @@ bool AArenaShooterCharacter::IsAiming()
 	return Combat && Combat->bAiming;
 }
 
-AWeapon* AArenaShooterCharacter::GetEquippedWeapon()
-{
-	if (!Combat) return nullptr;
-	return Combat->EquippedWeapon;
-}
-
 void AArenaShooterCharacter::PlayFireMontage(bool bAiming)
 {
 	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
@@ -634,5 +628,17 @@ void AArenaShooterCharacter::StartDissolve()
 		DissolveTimeline->AddInterpFloat(DissolveCurve, DissolveTrack);
 		DissolveTimeline->Play();
 	}
+}
+
+AWeapon* AArenaShooterCharacter::GetEquippedWeapon()
+{
+	if (!Combat) return nullptr;
+	return Combat->EquippedWeapon;
+}
+
+ECombatState AArenaShooterCharacter::GetCombatState() const
+{
+	if (!Combat) return ECombatState::ECS_MAX;
+	return Combat->CombatState;
 }
 

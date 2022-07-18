@@ -32,6 +32,7 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 	DOREPLIFETIME(UCombatComponent, EquippedWeapon);
 	DOREPLIFETIME(UCombatComponent, bAiming);
+	DOREPLIFETIME(UCombatComponent, CombatState);
 	DOREPLIFETIME_CONDITION(UCombatComponent, CarriedAmmo, COND_OwnerOnly);
 }
 
@@ -216,17 +217,46 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 
 void UCombatComponent::Reload()
 {
-	if (CarriedAmmo > 0)
+	if (CarriedAmmo > 0 && CombatState != ECombatState::ECS_Reloading)
 	{
 		ServerReload();
 	}
 }
 
+void UCombatComponent::FinishReloading()
+{
+	if (OwningCharacter == nullptr) return;
+	if (OwningCharacter->HasAuthority())
+	{
+		CombatState = ECombatState::ECS_Unoccupied;
+	}	
+}
+
+void UCombatComponent::HandleReload()
+{
+	OwningCharacter->PlayReloadMontage();
+}
+
 void UCombatComponent::ServerReload_Implementation()
 {
 	if (OwningCharacter == nullptr) return;
+	CombatState = ECombatState::ECS_Reloading;
+	HandleReload();
+}
 
-	OwningCharacter->PlayReloadMontage();
+void UCombatComponent::OnRep_CombatState()
+{
+	switch (CombatState)
+	{
+	case ECombatState::ECS_Unoccupied:
+
+		break;
+	case ECombatState::ECS_Reloading:
+		HandleReload();
+		break;			
+	default:
+		UE_LOG(LogCombatComp, Warning, TEXT("Combat state failed to set up"));
+	}
 }
 
 void UCombatComponent::OnRep_EquippedWeapon()

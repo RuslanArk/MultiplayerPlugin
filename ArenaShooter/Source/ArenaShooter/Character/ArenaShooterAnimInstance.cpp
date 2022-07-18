@@ -5,6 +5,7 @@
 
 #include "ArenaShooterCharacter.h"
 #include "ArenaShooter/Weapon/Weapon.h"
+#include "ArenaShooter/ArenaShooterTypes/CombatState.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -76,4 +77,6 @@ void UArenaShooterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			RightHandRotation = FMath::RInterpTo(RightHandRotation, LookAtRotation, DeltaSeconds, 30.f);
 		}
 	}
+
+	bUseFabrik = ArenaShooterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
 }

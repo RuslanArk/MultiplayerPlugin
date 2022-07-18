@@ -55,6 +55,8 @@ private:
 	bool bRotateRootBone;
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bElimed;
+	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	bool bUseFabrik;
 
 	FRotator CharacterRotationLastFrame;
 	FRotator CharacterRotation;

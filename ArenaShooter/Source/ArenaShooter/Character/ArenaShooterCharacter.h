@@ -8,6 +8,7 @@
 
 #include "ArenaShooter/ArenaShooterTypes/ArenaShooterEnums.h"
 #include "ArenaShooter/Interfaces/InteractWithCrosshairInterface.h"
+#include "ArenaShooter/ArenaShooterTypes/CombatState.h"
 
 #include "ArenaShooterCharacter.generated.h"
 
@@ -40,7 +41,7 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
 	AWeapon* OverlappingWeapon = nullptr;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	UCombatComponent* Combat = nullptr;
 
 	/**
@@ -152,6 +153,7 @@ public:
 	FORCEINLINE bool IsElimed() const { return bElimed; }
 	FORCEINLINE float GetHealth() const { return Health; }
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
+	ECombatState GetCombatState() const;
 
 	FVector GetHitTarget() const;
 
