@@ -134,6 +134,7 @@ protected:
 
 	void SetHUDCrosshairs(float DeltaTime);
 
+	int32 GetAmountToReload();
 
 private:
 	UFUNCTION()
@@ -147,5 +148,7 @@ private:
 	bool CanFire();
 
 	void InitializeCarriedAmmo();
+
+	void UpdateAmmoValues();
 		
 };
