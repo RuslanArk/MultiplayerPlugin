@@ -11,6 +11,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Sound/SoundCue.h"
 #include "TimerManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCombatComp, All, All);
@@ -224,6 +225,20 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	{
 		OwningController->SetHUDCarriedAmmo(CarriedAmmo);
 	}
+
+	if (EquippedWeapon->EquipSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			EquippedWeapon->EquipSound,
+			OwningCharacter->GetActorLocation());
+	}
+
+	if (EquippedWeapon->IsEmpty())
+	{
+		Reload();
+	}
+	
 	OwningCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	OwningCharacter->bUseControllerRotationYaw = true;
 }
@@ -311,6 +326,14 @@ void UCombatComponent::OnRep_EquippedWeapon()
 		}
 		OwningCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 		OwningCharacter->bUseControllerRotationYaw = true;
+
+		if (EquippedWeapon->EquipSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(
+				this,
+				EquippedWeapon->EquipSound,
+				OwningCharacter->GetActorLocation());
+		}
 	}
 }
 
@@ -371,6 +394,11 @@ void UCombatComponent::FireTimerFinished()
 	if (bFireButtonPressed && EquippedWeapon->bAutomaticWeapon)
 	{
 		Fire();
+	}
+
+	if (EquippedWeapon->IsEmpty())
+	{
+		Reload();
 	}
 }
 

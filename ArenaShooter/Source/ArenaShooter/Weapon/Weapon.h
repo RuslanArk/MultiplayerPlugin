@@ -12,6 +12,7 @@
 class UAnimationAsset;
 class USkeletalMeshComponent;
 class USphereComponent;
+class USoundCue;
 class UWidgetComponent;
 class UTexture2D;
 
@@ -71,6 +72,12 @@ public:
 	float FireDelay = 0.15f;
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	bool bAutomaticWeapon = true;
+
+	/**
+	* Sounds
+	*/
+	UPROPERTY(EditAnywhere)
+	USoundCue* EquipSound;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
