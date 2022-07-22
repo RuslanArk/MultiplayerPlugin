@@ -18,6 +18,13 @@ void AArenaShooterPlayerController::BeginPlay()
 	ArenaShooterHUD = Cast<AArenaShooterHUD>(GetHUD());
 }
 
+void AArenaShooterPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	SetHUDTime();
+}
+
 void AArenaShooterPlayerController::SetHUDHealth(float Health, float MaxHealth)
 {
 	ArenaShooterHUD = ArenaShooterHUD == nullptr ? Cast<AArenaShooterHUD>(GetHUD()) : ArenaShooterHUD;
@@ -95,6 +102,24 @@ void AArenaShooterPlayerController::SetHUDCarriedAmmo(int32 Ammo)
 	}
 }
 
+void AArenaShooterPlayerController::SetHUDMatchCountDown(float CountDownTime)
+{
+	ArenaShooterHUD = ArenaShooterHUD == nullptr ? Cast<AArenaShooterHUD>(GetHUD()) : ArenaShooterHUD;
+
+	const bool bHUDValid = ArenaShooterHUD &&
+		ArenaShooterHUD->CharacterOverlay &&
+		ArenaShooterHUD->CharacterOverlay->MatchCountDownText;
+
+	if (bHUDValid)
+	{
+		int32 Minutes = FMath::FloorToInt(CountDownTime / 60.f);
+		int32 Seconds = CountDownTime - Minutes * 60;
+		
+		FString CountDownText = FString::Printf(TEXT("%02d : %02d"), Minutes, Seconds);
+		ArenaShooterHUD->CharacterOverlay->MatchCountDownText->SetText(FText::FromString(CountDownText));
+	}
+}
+
 void AArenaShooterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -103,4 +128,15 @@ void AArenaShooterPlayerController::OnPossess(APawn* InPawn)
 	{
 		SetHUDHealth(ShooterCharacter->GetHealth(), ShooterCharacter->GetMaxHealth());
 	}	
+}
+
+void AArenaShooterPlayerController::SetHUDTime()
+{
+	uint32 SecondsLeft = FMath::CeilToInt(MatchTime - GetWorld()->GetTimeSeconds());
+	if (CountdownInt != SecondsLeft)
+	{
+		SetHUDMatchCountDown(MatchTime - GetWorld()->GetTimeSeconds());
+	}
+	
+	CountdownInt = SecondsLeft;
 }

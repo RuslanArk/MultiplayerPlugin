@@ -16,16 +16,24 @@ class ARENASHOOTER_API AArenaShooterPlayerController : public APlayerController
 	UPROPERTY()
 	AArenaShooterHUD* ArenaShooterHUD = nullptr;
 
+	float MatchTime = 120.f;
+	uint32 CountdownInt = 0;
+
 public:
+	virtual void Tick(float DeltaSeconds) override;
+	
 	void SetHUDHealth(float Health, float MaxHealth);
 	void SetHUDScore(float Score);
 	void SetHUDDefeats(int32 Defeats);
 	void SetHUDWeaponAmmo(int32 Ammo);
 	void SetHUDCarriedAmmo(int32 Ammo);
+	void SetHUDMatchCountDown(float CountDownTime);
 
 	virtual void OnPossess(APawn* InPawn) override;
 	
 protected:
 	virtual void BeginPlay() override;
+
+	void SetHUDTime();
 	
 };
