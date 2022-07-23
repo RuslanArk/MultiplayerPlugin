@@ -70,8 +70,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a45807af-f75e-49b2-9dbd-2233479e25f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/HUD/WBP_CharacterOverlay.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/HUD/WBP_CharacterOverlay.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/HUD/CharacterOverlay.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/HUD/CharacterOverlay.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.h" afterDir="false" />
     </list>
@@ -22917,7 +22915,8 @@
       <workItem from="1658292216340" duration="276000" />
       <workItem from="1658292586168" duration="2666000" />
       <workItem from="1658379354437" duration="2169000" />
-      <workItem from="1658472381242" duration="1962000" />
+      <workItem from="1658472381242" duration="2409000" />
+      <workItem from="1658578749475" duration="5980000" />
     </task>
     <servers />
   </component>
