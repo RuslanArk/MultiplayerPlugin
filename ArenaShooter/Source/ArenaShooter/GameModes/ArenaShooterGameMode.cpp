@@ -10,6 +10,33 @@
 #include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
 #include "ArenaShooter/PlayerState/ArenaShooterPlayerState.h"
 
+AArenaShooterGameMode::AArenaShooterGameMode()
+{
+	bDelayedStart = true;
+	
+}
+
+void AArenaShooterGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	LevelStartingTime = GetWorld()->GetTimeSeconds();
+}
+
+void AArenaShooterGameMode::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (GetMatchState() == MatchState::WaitingToStart)
+	{
+		CountDownTime = WarmUpTime - GetWorld()->GetTimeSeconds() + LevelStartingTime;
+		if (CountDownTime <= 0.0f)
+		{
+			StartMatch();
+		}
+	}
+}
+
 void AArenaShooterGameMode::PlayerEliminated(AArenaShooterCharacter* EliminatedCharacter,
                                              AArenaShooterPlayerController* VictimController, AArenaShooterPlayerController* AttackerController)
 {
