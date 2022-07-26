@@ -10,6 +10,8 @@ class UTexture2D;
 class UCharacterOverlay;
 class UUserWidget;
 
+class UAnnouncement;
+
 USTRUCT(BlueprintType)
 struct FHUDPackage
 {
@@ -32,8 +34,13 @@ class ARENASHOOTER_API AArenaShooterHUD : public AHUD
 public:
 	UPROPERTY(EditAnywhere, Category = "PlayerStats")
 	TSubclassOf<UUserWidget> CharacterOverlayClass;
-	
+	UPROPERTY()
 	UCharacterOverlay* CharacterOverlay;
+	
+	UPROPERTY(EditAnywhere, Category = "Announcements")
+	TSubclassOf<UUserWidget> AnnouncementClass;
+	UPROPERTY()
+	UAnnouncement* Announcement;
 	
 private:
 	FHUDPackage HUDPackage;
@@ -44,11 +51,13 @@ private:
 public:
 	virtual void DrawHUD() override;
 
+	void AddCharacterOverlay();
+	void AddAnnouncement();
+
 	FORCEINLINE void SetHUDPackage(const FHUDPackage Package) { HUDPackage = Package; }
 
 protected:
-	virtual void BeginPlay() override;
-	void AddCharacterOverlay();
+	virtual void BeginPlay() override;	
 
 private:
 	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread, FLinearColor CrosshairColor);

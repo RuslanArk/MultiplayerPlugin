@@ -4,10 +4,13 @@
 #include "ArenaShooterPlayerController.h"
 
 #include "ArenaShooter/Character/ArenaShooterCharacter.h"
+#include "ArenaShooter/GameModes/ArenaShooterGameMode.h"
+#include "ArenaShooter/HUD/Announcement.h"
 #include "ArenaShooter/HUD/ArenaShooterHUD.h"
 #include "ArenaShooter/HUD/CharacterOverlay.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "Net/UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogASPlayerController, All, All);
 
@@ -16,6 +19,17 @@ void AArenaShooterPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	ArenaShooterHUD = Cast<AArenaShooterHUD>(GetHUD());
+	if (ArenaShooterHUD)
+	{
+		ArenaShooterHUD->AddAnnouncement();
+	}
+}
+
+void AArenaShooterPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AArenaShooterPlayerController, MatchState);
 }
 
 void AArenaShooterPlayerController::Tick(float DeltaSeconds)
@@ -23,8 +37,8 @@ void AArenaShooterPlayerController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	SetHUDTime();
-
 	CheckTimeSync(DeltaSeconds);
+	PollInit();
 }
 
 void AArenaShooterPlayerController::CheckTimeSync(float DeltaTime)
@@ -52,6 +66,13 @@ void AArenaShooterPlayerController::SetHUDHealth(float Health, float MaxHealth)
 		FString HealthText = FString::Printf(TEXT("%d / %d"), FMath::CeilToInt(Health), FMath::CeilToInt(MaxHealth));
 		ArenaShooterHUD->CharacterOverlay->HealthText->SetText(FText::FromString(HealthText));
 	}
+	else
+	{
+		bInitializeCharacterOverlay = true;
+		HUDHealth = Health;
+		HUDMaxHealth = MaxHealth;
+		
+	}
 }
 
 void AArenaShooterPlayerController::SetHUDScore(float Score)
@@ -67,6 +88,11 @@ void AArenaShooterPlayerController::SetHUDScore(float Score)
 		FString ScoreText = FString::Printf(TEXT("%d"), FMath::FloorToInt(Score));
 		ArenaShooterHUD->CharacterOverlay->ScoreAmount->SetText(FText::FromString(ScoreText));
 	}
+	else
+	{
+		bInitializeCharacterOverlay = true;
+		HUDScore = Score;
+	}
 }
 
 void AArenaShooterPlayerController::SetHUDDefeats(int32 Defeats)
@@ -81,6 +107,11 @@ void AArenaShooterPlayerController::SetHUDDefeats(int32 Defeats)
 	{
 		FString DefeatsText = FString::Printf(TEXT("%d"), Defeats);
 		ArenaShooterHUD->CharacterOverlay->DefeatsAmount->SetText(FText::FromString(DefeatsText));
+	}
+	else
+	{
+		bInitializeCharacterOverlay = true;
+		HUDDefeats = Defeats;
 	}
 }
 
@@ -163,6 +194,23 @@ void AArenaShooterPlayerController::SetHUDTime()
 	CountdownInt = SecondsLeft;
 }
 
+void AArenaShooterPlayerController::PollInit()
+{
+	if (CharacterOverlay == nullptr)
+	{
+		if (ArenaShooterHUD && ArenaShooterHUD->CharacterOverlay)
+		{
+			CharacterOverlay = ArenaShooterHUD->CharacterOverlay;
+			if (CharacterOverlay)
+			{
+				SetHUDHealth(HUDHealth, HUDMaxHealth);
+				SetHUDScore(HUDScore);
+				SetHUDDefeats(HUDDefeats);
+			}
+		}
+	}
+}
+
 void AArenaShooterPlayerController::ServerRequestServerTime_Implementation(float TimeOfClientRequest)
 {
 	float ServerTimeOfReceipt = GetWorld()->GetTimeSeconds();
@@ -185,4 +233,35 @@ float AArenaShooterPlayerController::GetServerTime()
 	}
 
 	return GetWorld()->GetTimeSeconds() + ClientServerDelta;
+}
+
+void AArenaShooterPlayerController::OnMatchStateSet(FName State)
+{
+	MatchState = State;
+
+	if (MatchState == MatchState::InProgress)
+	{
+		HandleMatchHasStarted();
+	}
+}
+
+void AArenaShooterPlayerController::OnRep_MatchState()
+{
+	if (MatchState == MatchState::InProgress)
+	{
+		HandleMatchHasStarted();
+	}
+}
+
+void AArenaShooterPlayerController::HandleMatchHasStarted()
+{
+	ArenaShooterHUD = ArenaShooterHUD == nullptr ? Cast<AArenaShooterHUD>(GetHUD()) : ArenaShooterHUD;
+	if (ArenaShooterHUD)
+	{
+		ArenaShooterHUD->AddCharacterOverlay();
+		if (ArenaShooterHUD->Announcement)
+		{
+			ArenaShooterHUD->Announcement->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
 }

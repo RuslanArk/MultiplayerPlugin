@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 
 #include "ArenaShooter/HUD/CharacterOverlay.h"
+#include "ArenaShooter/HUD/Announcement.h"
 
 void AArenaShooterHUD::DrawHUD()
 {
@@ -51,8 +52,6 @@ void AArenaShooterHUD::DrawHUD()
 void AArenaShooterHUD::BeginPlay()
 {
 	Super::BeginPlay();
-
-	AddCharacterOverlay();
 }
 
 void AArenaShooterHUD::AddCharacterOverlay()
@@ -63,6 +62,17 @@ void AArenaShooterHUD::AddCharacterOverlay()
 	{
 		CharacterOverlay = CreateWidget<UCharacterOverlay>(PlayerController, CharacterOverlayClass);
 		CharacterOverlay->AddToViewport();
+	}
+}
+
+void AArenaShooterHUD::AddAnnouncement()
+{
+	if (!AnnouncementClass) return;
+	
+	if (APlayerController* PlayerController = GetOwningPlayerController())
+	{
+		Announcement = CreateWidget<UAnnouncement>(PlayerController, AnnouncementClass);
+		Announcement->AddToViewport();
 	}
 }
 

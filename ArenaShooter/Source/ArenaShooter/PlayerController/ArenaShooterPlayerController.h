@@ -7,6 +7,7 @@
 #include "ArenaShooterPlayerController.generated.h"
 
 class AArenaShooterHUD;
+class UCharacterOverlay;
 
 UCLASS()
 class ARENASHOOTER_API AArenaShooterPlayerController : public APlayerController
@@ -27,6 +28,19 @@ private:
 	float MatchTime = 120.f;
 	uint32 CountdownInt = 0;
 
+	UPROPERTY(ReplicatedUsing = OnRep_MatchState)
+	FName MatchState;
+
+	UPROPERTY()
+	UCharacterOverlay* CharacterOverlay;
+
+	bool bInitializeCharacterOverlay = false;
+
+	float HUDHealth;
+	float HUDMaxHealth;
+	float HUDScore;
+	int32 HUDDefeats;
+
 public:
 	virtual void Tick(float DeltaSeconds) override;
 	
@@ -42,11 +56,17 @@ public:
 	virtual void ReceivedPlayer() override;
 
 	virtual float GetServerTime(); // synced with server world clock
+
+	void OnMatchStateSet(FName State);
 	
 protected:
 	virtual void BeginPlay() override;
-
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	void SetHUDTime();
+	void PollInit();
+
+	void HandleMatchHasStarted();
 
 	/**
 	 *	Sync time between client and server
@@ -59,5 +79,9 @@ protected:
 	//Reports the current server time to the client in response to ServerRequestServerTime
 	UFUNCTION(Client, Reliable)
 	void ClientReportServerTime(float TimeOfClientRequest, float TimeServerReceivedClientRequest);
+
+private:
 	
+	UFUNCTION()
+	void OnRep_MatchState();
 };

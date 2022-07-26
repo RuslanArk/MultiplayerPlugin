@@ -37,6 +37,20 @@ void AArenaShooterGameMode::Tick(float DeltaSeconds)
 	}
 }
 
+void AArenaShooterGameMode::OnMatchStateSet()
+{
+	Super::OnMatchStateSet();
+
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		AArenaShooterPlayerController* ArenaShooterPlayer = Cast<AArenaShooterPlayerController>(*It);
+		if (ArenaShooterPlayer)
+		{
+			ArenaShooterPlayer->OnMatchStateSet(MatchState);
+		}
+	}
+}
+
 void AArenaShooterGameMode::PlayerEliminated(AArenaShooterCharacter* EliminatedCharacter,
                                              AArenaShooterPlayerController* VictimController, AArenaShooterPlayerController* AttackerController)
 {
