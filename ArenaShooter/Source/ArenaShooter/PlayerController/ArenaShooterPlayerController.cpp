@@ -10,6 +10,7 @@
 #include "ArenaShooter/HUD/CharacterOverlay.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogASPlayerController, All, All);
@@ -19,10 +20,7 @@ void AArenaShooterPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	ArenaShooterHUD = Cast<AArenaShooterHUD>(GetHUD());
-	if (ArenaShooterHUD)
-	{
-		ArenaShooterHUD->AddAnnouncement();
-	}
+	ServerCheckMatchState();	
 }
 
 void AArenaShooterPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -163,6 +161,24 @@ void AArenaShooterPlayerController::SetHUDMatchCountDown(float CountDownTime)
 	}
 }
 
+void AArenaShooterPlayerController::SetHUDAnnouncementCountDown(float CountDownTime)
+{
+	ArenaShooterHUD = ArenaShooterHUD == nullptr ? Cast<AArenaShooterHUD>(GetHUD()) : ArenaShooterHUD;
+
+	const bool bHUDValid = ArenaShooterHUD &&
+		ArenaShooterHUD->Announcement &&
+		ArenaShooterHUD->Announcement->WarmupTime;
+
+	if (bHUDValid)
+	{
+		int32 Minutes = FMath::FloorToInt(CountDownTime / 60.f);
+		int32 Seconds = CountDownTime - Minutes * 60;
+		
+		FString CountDownText = FString::Printf(TEXT("%02d : %02d"), Minutes, Seconds);
+		ArenaShooterHUD->Announcement->WarmupTime->SetText(FText::FromString(CountDownText));
+	}
+}
+
 void AArenaShooterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -185,10 +201,27 @@ void AArenaShooterPlayerController::ReceivedPlayer()
 
 void AArenaShooterPlayerController::SetHUDTime()
 {
-	uint32 SecondsLeft = FMath::CeilToInt(MatchTime - GetServerTime());
+	float TimeLeft = 0.0f;
+	if (MatchState == MatchState::WaitingToStart)
+	{
+		TimeLeft = WarmupTime - GetServerTime() + LevelStartingTime;
+	}
+	else if (MatchState == MatchState::InProgress)
+	{
+		TimeLeft = WarmupTime + MatchTime - GetServerTime() + LevelStartingTime;
+	}
+	
+	uint32 SecondsLeft = FMath::CeilToInt(TimeLeft);
 	if (CountdownInt != SecondsLeft)
 	{
-		SetHUDMatchCountDown(MatchTime - GetServerTime());
+		if (MatchState == MatchState::WaitingToStart)
+		{
+			SetHUDAnnouncementCountDown(TimeLeft);
+		}
+		else if (MatchState == MatchState::InProgress)
+		{
+			SetHUDMatchCountDown(TimeLeft);
+		}		
 	}
 	
 	CountdownInt = SecondsLeft;
@@ -242,6 +275,32 @@ void AArenaShooterPlayerController::OnMatchStateSet(FName State)
 	if (MatchState == MatchState::InProgress)
 	{
 		HandleMatchHasStarted();
+	}
+}
+
+void AArenaShooterPlayerController::ServerCheckMatchState_Implementation()
+{
+	AArenaShooterGameMode* GameMode = Cast<AArenaShooterGameMode>(UGameplayStatics::GetGameMode(this));
+	if (GameMode)
+	{
+		WarmupTime = GameMode->WarmUpTime;
+		MatchTime = GameMode->MatchTime;
+		LevelStartingTime = GameMode->LevelStartingTime;
+		MatchState = GameMode->GetMatchState();
+		ClientJoinMidgame(MatchState, WarmupTime, MatchTime, LevelStartingTime);
+	}
+}
+
+void AArenaShooterPlayerController::ClientJoinMidgame_Implementation(FName StateOfMatch, float Warmup, float Match, float StartingTime)
+{
+	WarmupTime = Warmup;
+	MatchTime = Match;
+	LevelStartingTime = StartingTime;
+	MatchState = StateOfMatch;
+	OnMatchStateSet(MatchState);	
+	if (ArenaShooterHUD && MatchState == MatchState::WaitingToStart)
+	{
+		ArenaShooterHUD->AddAnnouncement();
 	}
 }
 
