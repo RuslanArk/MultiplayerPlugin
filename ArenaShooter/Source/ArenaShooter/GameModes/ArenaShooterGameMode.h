@@ -6,6 +6,11 @@
 #include "GameFramework/GameMode.h"
 #include "ArenaShooterGameMode.generated.h"
 
+namespace MatchState
+{
+	extern ARENASHOOTER_API const FName Cooldown; // Match duration has been reached. Display cooldown timer;
+}
+
 class AArenaShooterCharacter;
 class AArenaShooterPlayerController;
 
@@ -19,6 +24,8 @@ public:
 	float WarmUpTime = 10.f;
 	UPROPERTY(EditDefaultsOnly)
 	float MatchTime = 120.f;
+	UPROPERTY(EditDefaultsOnly)
+	float CooldownTime = 10.f;
 	UPROPERTY(EditDefaultsOnly)
 	float LevelStartingTime = 0.f;
 

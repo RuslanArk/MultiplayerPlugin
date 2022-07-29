@@ -10,6 +10,11 @@
 #include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
 #include "ArenaShooter/PlayerState/ArenaShooterPlayerState.h"
 
+namespace MatchState
+{
+	const FName Cooldown = FName("Cooldown");
+}
+
 AArenaShooterGameMode::AArenaShooterGameMode()
 {
 	bDelayedStart = true;
@@ -33,6 +38,14 @@ void AArenaShooterGameMode::Tick(float DeltaSeconds)
 		if (CountDownTime <= 0.0f)
 		{
 			StartMatch();
+		}
+	}
+	else if (MatchState == MatchState::InProgress)
+	{
+		CountDownTime = WarmUpTime + MatchTime - GetWorld()->GetTimeSeconds() + LevelStartingTime;
+		if (CountDownTime <= 0.f)
+		{
+			SetMatchState(MatchState::Cooldown);
 		}
 	}
 }

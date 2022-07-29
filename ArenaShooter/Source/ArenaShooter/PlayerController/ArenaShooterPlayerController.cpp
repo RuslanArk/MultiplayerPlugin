@@ -276,6 +276,10 @@ void AArenaShooterPlayerController::OnMatchStateSet(FName State)
 	{
 		HandleMatchHasStarted();
 	}
+	else if (MatchState == MatchState::Cooldown)
+	{
+		HandleCooldown();
+	}
 }
 
 void AArenaShooterPlayerController::ServerCheckMatchState_Implementation()
@@ -310,6 +314,10 @@ void AArenaShooterPlayerController::OnRep_MatchState()
 	{
 		HandleMatchHasStarted();
 	}
+	else if (MatchState == MatchState::Cooldown)
+	{
+		HandleCooldown();
+	}
 }
 
 void AArenaShooterPlayerController::HandleMatchHasStarted()
@@ -321,6 +329,19 @@ void AArenaShooterPlayerController::HandleMatchHasStarted()
 		if (ArenaShooterHUD->Announcement)
 		{
 			ArenaShooterHUD->Announcement->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+}
+
+void AArenaShooterPlayerController::HandleCooldown()
+{
+	ArenaShooterHUD = ArenaShooterHUD == nullptr ? Cast<AArenaShooterHUD>(GetHUD()) : ArenaShooterHUD;
+	if (ArenaShooterHUD && ArenaShooterHUD->CharacterOverlay)
+	{
+		ArenaShooterHUD->CharacterOverlay->RemoveFromParent();
+		if (ArenaShooterHUD->Announcement)
+		{
+			ArenaShooterHUD->Announcement->SetVisibility(ESlateVisibility::Visible);
 		}
 	}
 }

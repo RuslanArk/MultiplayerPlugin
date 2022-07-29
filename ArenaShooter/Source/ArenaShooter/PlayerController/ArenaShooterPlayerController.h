@@ -61,6 +61,8 @@ public:
 	virtual float GetServerTime(); // synced with server world clock
 
 	void OnMatchStateSet(FName State);
+
+	void HandleCooldown();
 	
 protected:
 	virtual void BeginPlay() override;
