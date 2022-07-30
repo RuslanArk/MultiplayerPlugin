@@ -7,6 +7,7 @@
 #include "ArenaShooterPlayerController.generated.h"
 
 class AArenaShooterHUD;
+class AArenaShooterGameMode;
 class UCharacterOverlay;
 
 UCLASS()
@@ -28,6 +29,7 @@ private:
 	float LevelStartingTime = 0.f;
 	float MatchTime = 0.f;
 	float WarmupTime = 0.f;
+	float CooldownTime = 0.f;
 	uint32 CountdownInt = 0;
 
 	UPROPERTY(ReplicatedUsing = OnRep_MatchState)
@@ -43,6 +45,9 @@ private:
 	float HUDScore;
 	int32 HUDDefeats;
 
+	UPROPERTY()
+	AArenaShooterGameMode* ASGameMode = nullptr;
+
 public:
 	virtual void Tick(float DeltaSeconds) override;
 	
@@ -51,8 +56,8 @@ public:
 	void SetHUDDefeats(int32 Defeats);
 	void SetHUDWeaponAmmo(int32 Ammo);
 	void SetHUDCarriedAmmo(int32 Ammo);
-	void SetHUDMatchCountDown(float CountDownTime);
-	void SetHUDAnnouncementCountDown(float CountDownTime);
+	void SetHUDMatchCountdown(float CountDownTime);
+	void SetHUDAnnouncementCountdown(float CountDownTime);
 
 	virtual void OnPossess(APawn* InPawn) override;
 	// synced with server clock as soon as possible
@@ -87,7 +92,7 @@ protected:
 	UFUNCTION(Server, Reliable)
 	void ServerCheckMatchState();
 	UFUNCTION(Client, Reliable)
-	void ClientJoinMidgame(FName StateOfMatch, float Warmup, float Match, float StartingTime);
+	void ClientJoinMidgame(FName StateOfMatch, float Warmup, float Match, float StartingTime, float Cooldown);
 
 private:
 	

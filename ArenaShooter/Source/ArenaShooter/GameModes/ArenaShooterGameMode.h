@@ -40,6 +40,8 @@ public:
 	virtual void PlayerEliminated(AArenaShooterCharacter* EliminatedCharacter, AArenaShooterPlayerController* VictimController, AArenaShooterPlayerController* AttackerController);
 	virtual void RequestRespawn(ACharacter* ElimedCharacter, AController* ElimedController);
 
+	FORCEINLINE float GetCountdownTime() const { return CountDownTime; }
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnMatchStateSet() override;
