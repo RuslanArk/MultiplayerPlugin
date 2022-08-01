@@ -48,6 +48,14 @@ void AArenaShooterGameMode::Tick(float DeltaSeconds)
 			SetMatchState(MatchState::Cooldown);
 		}
 	}
+	else if (MatchState == MatchState::Cooldown)
+	{
+		CountDownTime = CooldownTime + WarmUpTime + MatchTime - GetWorld()->GetTimeSeconds() + LevelStartingTime;
+		if (CountDownTime <= 0.f)
+		{
+			RestartGame();
+		}
+	}
 }
 
 void AArenaShooterGameMode::OnMatchStateSet()

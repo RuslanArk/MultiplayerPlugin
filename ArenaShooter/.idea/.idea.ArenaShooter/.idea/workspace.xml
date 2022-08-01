@@ -70,10 +70,12 @@
   <component name="ChangeListManager">
     <list default="true" id="a45807af-f75e-49b2-9dbd-2233479e25f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/GameModes/BP_ArenaShooterGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GameModes/BP_ArenaShooterGameMode.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/GameModes/ArenaShooterGameMode.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/GameModes/ArenaShooterGameMode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterAnimInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterAnimInstance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/GameModes/ArenaShooterGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/GameModes/ArenaShooterGameMode.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,17 +102,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "XThreadsFramesViewSplitterKey": "0.56911445",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.56911445&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="C++ Project.ArenaShooter">
     <configuration name="ArenaShooter" type="CppProject" factoryName="C++ Project">
       <configuration_1>
@@ -22929,6 +22931,7 @@
       <workItem from="1659079181517" duration="437000" />
       <workItem from="1659081998393" duration="2038000" />
       <workItem from="1659185540398" duration="5688000" />
+      <workItem from="1659331069342" duration="2990000" />
     </task>
     <servers />
   </component>

@@ -4,6 +4,7 @@
 #include "ArenaShooterPlayerController.h"
 
 #include "ArenaShooter/Character/ArenaShooterCharacter.h"
+#include "ArenaShooter/Components/CombatComponent.h"
 #include "ArenaShooter/GameModes/ArenaShooterGameMode.h"
 #include "ArenaShooter/HUD/Announcement.h"
 #include "ArenaShooter/HUD/ArenaShooterHUD.h"
@@ -216,7 +217,7 @@ void AArenaShooterPlayerController::SetHUDTime()
 		else if (MatchState == MatchState::InProgress)
 		{
 			SetHUDMatchCountdown(TimeLeft);
-		}		
+		}
 	}
 	
 	CountdownInt = SecondsLeft;
@@ -366,5 +367,12 @@ void AArenaShooterPlayerController::HandleCooldown()
 			ArenaShooterHUD->Announcement->AnnouncementText->SetText(FText::FromString(AnnouncementText));
 			ArenaShooterHUD->Announcement->InfoText->SetText(FText());
 		}
+	}
+
+	AArenaShooterCharacter* ArenaShooterCharacter = Cast<AArenaShooterCharacter>(GetPawn());
+	if (ArenaShooterCharacter && ArenaShooterCharacter->GetCombatComponent())
+	{
+		ArenaShooterCharacter->bDisableGameplay = true;
+		ArenaShooterCharacter->GetCombatComponent()->FireButtonPressed(false);
 	}
 }

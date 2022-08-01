@@ -79,6 +79,7 @@ void UArenaShooterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 
 	bUseFabrik = ArenaShooterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
-	bUseAimOffsets = ArenaShooterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
-	bTransformRightHand = ArenaShooterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+	bUseAimOffsets = ArenaShooterCharacter->GetCombatState() != ECombatState::ECS_Reloading && !ArenaShooterCharacter->IsGameplayDisabled();
+	bTransformRightHand = ArenaShooterCharacter->GetCombatState() != ECombatState::ECS_Reloading && !ArenaShooterCharacter->IsGameplayDisabled();
+		
 }

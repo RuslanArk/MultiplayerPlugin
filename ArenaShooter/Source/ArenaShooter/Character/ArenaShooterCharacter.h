@@ -28,6 +28,10 @@ class ARENASHOOTER_API AArenaShooterCharacter : public ACharacter, public IInter
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(Replicated)
+	bool bDisableGameplay = false;
+
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	USpringArmComponent* CameraBoom = nullptr;
@@ -153,6 +157,8 @@ public:
 	FORCEINLINE bool IsElimed() const { return bElimed; }
 	FORCEINLINE float GetHealth() const { return Health; }
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
+	FORCEINLINE UCombatComponent* GetCombatComponent() const { return Combat; }
+	FORCEINLINE bool IsGameplayDisabled() const { return bDisableGameplay; }
 	ECombatState GetCombatState() const;
 
 	FVector GetHitTarget() const;
@@ -167,6 +173,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	void RotateInPlace(float DeltaTime);
 
 	virtual void Jump() override;
 	void MoveForward(float Value);

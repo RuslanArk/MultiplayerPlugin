@@ -71,6 +71,7 @@ void AArenaShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 
 	DOREPLIFETIME_CONDITION(AArenaShooterCharacter, OverlappingWeapon, COND_OwnerOnly);
 	DOREPLIFETIME(AArenaShooterCharacter, Health);
+	DOREPLIFETIME(AArenaShooterCharacter, bDisableGameplay);
 }
 
 FVector AArenaShooterCharacter::GetHitTarget() const
@@ -103,19 +104,7 @@ void AArenaShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (GetLocalRole() > ROLE_SimulatedProxy && IsLocallyControlled())
-	{
-		AimOffset(DeltaTime);
-	}
-	else
-	{
-		TimeSinceLastMovementReplication += DeltaTime;
-		if (TimeSinceLastMovementReplication > 0.25f)
-		{
-			OnRep_ReplicatedMovement();
-		}
-		CalculateAO_Pitch();
-	}
+	RotateInPlace(DeltaTime);
 	
 	HideCameraIfCharacterClose();
 	PollInit();
@@ -146,6 +135,7 @@ void AArenaShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 void AArenaShooterCharacter::Jump()
 {
+	if (bDisableGameplay) return;
 	if (bIsCrouched)
 	{
 		UnCrouch();
@@ -174,10 +164,15 @@ void AArenaShooterCharacter::Destroyed()
 	{
 		ElimBotComponent->DestroyComponent();
 	}
+	if (Combat && Combat->EquippedWeapon)
+	{
+		Combat->EquippedWeapon->Destroy();
+	}
 }
 
 void AArenaShooterCharacter::MoveForward(float Value)
 {
+	if (bDisableGameplay) return;
 	if (Controller != nullptr && Value != 0.0f)
 	{
 		const FRotator YawRotation(0.0, Controller->GetControlRotation().Yaw, 0.0f);
@@ -188,6 +183,7 @@ void AArenaShooterCharacter::MoveForward(float Value)
 
 void AArenaShooterCharacter::MoveRight(float Value)
 {
+	if (bDisableGameplay) return;
 	if (Controller != nullptr && Value != 0.0f)
 	{
 		const FRotator YawRotation(0.0, Controller->GetControlRotation().Yaw, 0.0f);
@@ -208,6 +204,7 @@ void AArenaShooterCharacter::LookUp(float Value)
 
 void AArenaShooterCharacter::EquipButtonPressed()
 {
+	if (bDisableGameplay) return;
 	if (Combat)
 	{
 		if (HasAuthority())
@@ -223,6 +220,7 @@ void AArenaShooterCharacter::EquipButtonPressed()
 
 void AArenaShooterCharacter::CrouchButtonPressed()
 {
+	if (bDisableGameplay) return;
 	if (bIsCrouched)
 	{
 		UnCrouch();
@@ -235,6 +233,7 @@ void AArenaShooterCharacter::CrouchButtonPressed()
 
 void AArenaShooterCharacter::ReloadButtonPressed()
 {
+	if (bDisableGameplay) return;
 	if (Combat)
 	{
 		Combat->Reload();
@@ -243,6 +242,7 @@ void AArenaShooterCharacter::ReloadButtonPressed()
 
 void AArenaShooterCharacter::AimButtonPressed()
 {
+	if (bDisableGameplay) return;
 	if (Combat)
 	{
 		Combat->SetAiming(true);
@@ -251,6 +251,7 @@ void AArenaShooterCharacter::AimButtonPressed()
 
 void AArenaShooterCharacter::AimButtonReleased()
 {
+	if (bDisableGameplay) return;
 	if (Combat)
 	{
 		Combat->SetAiming(false);
@@ -259,6 +260,7 @@ void AArenaShooterCharacter::AimButtonReleased()
 
 void AArenaShooterCharacter::FireButtonPressed()
 {
+	if (bDisableGameplay) return;
 	if (Combat)
 	{
 		Combat->FireButtonPressed(true);
@@ -267,6 +269,7 @@ void AArenaShooterCharacter::FireButtonPressed()
 
 void AArenaShooterCharacter::FireButtonReleased()
 {
+	if (bDisableGameplay) return;
 	if (Combat)
 	{
 		Combat->FireButtonPressed(false);
@@ -497,10 +500,8 @@ void AArenaShooterCharacter::MulticastElim_Implementation()
 
 	GetCharacterMovement()->DisableMovement();
 	GetCharacterMovement()->StopMovementImmediately();
-	if (ASPlayerController)
-	{
-		DisableInput(ASPlayerController);
-	}
+	bDisableGameplay = true;
+	
 	// disable collision
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -642,3 +643,25 @@ ECombatState AArenaShooterCharacter::GetCombatState() const
 	return Combat->CombatState;
 }
 
+void AArenaShooterCharacter::RotateInPlace(float DeltaTime)
+{
+	if (bDisableGameplay)
+	{
+		bUseControllerRotationYaw = false;
+		TurningInPlace = ETurningInPlace::ETIP_NotTurning;
+		return;
+	}
+	if (GetLocalRole() > ROLE_SimulatedProxy && IsLocallyControlled())
+	{
+		AimOffset(DeltaTime);
+	}
+	else
+	{
+		TimeSinceLastMovementReplication += DeltaTime;
+		if (TimeSinceLastMovementReplication > 0.25f)
+		{
+			OnRep_ReplicatedMovement();
+		}
+		CalculateAO_Pitch();
+	}
+}
