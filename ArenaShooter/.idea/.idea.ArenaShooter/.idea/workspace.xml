@@ -70,12 +70,19 @@
   <component name="ChangeListManager">
     <list default="true" id="a45807af-f75e-49b2-9dbd-2233479e25f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ArenaShooter/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterAnimInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterAnimInstance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Character/BP_ArenaShooterCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Character/BP_ArenaShooterCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/External/MilitaryWeapSilver/Weapons/Rocket_Launcher_A.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/External/MilitaryWeapSilver/Weapons/Rocket_Launcher_A.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/External/MilitaryWeapSilver/Weapons/Rocket_Launcher_A_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/External/MilitaryWeapSilver/Weapons/Rocket_Launcher_A_Skeleton.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/GameModes/BP_ArenaShooterGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GameModes/BP_ArenaShooterGameMode.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/ArenaShooterMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/ArenaShooterMap.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Weapon/BP_AssaultRifle.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Weapon/BP_AssaultRifle.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Character/ArenaShooterCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Components/CombatComponent.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/GameModes/ArenaShooterGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/GameModes/ArenaShooterGameMode.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/PlayerController/ArenaShooterPlayerController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Projectile.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/Projectile.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/WeaponTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ArenaShooter/Weapon/WeaponTypes.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,6 +99,10 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Source/ArenaShooter/Weapon/ProjectileRocket.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/ArenaShooter/Weapon/ProjectileRocket.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -22932,6 +22943,10 @@
       <workItem from="1659081998393" duration="2038000" />
       <workItem from="1659185540398" duration="5688000" />
       <workItem from="1659331069342" duration="2990000" />
+      <workItem from="1659417824202" duration="2579000" />
+      <workItem from="1659426350893" duration="1800000" />
+      <workItem from="1659503481656" duration="2698000" />
+      <workItem from="1659590036277" duration="2684000" />
     </task>
     <servers />
   </component>

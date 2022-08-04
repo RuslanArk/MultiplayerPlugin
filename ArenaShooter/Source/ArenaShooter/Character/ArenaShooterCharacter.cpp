@@ -164,7 +164,11 @@ void AArenaShooterCharacter::Destroyed()
 	{
 		ElimBotComponent->DestroyComponent();
 	}
-	if (Combat && Combat->EquippedWeapon)
+
+	AArenaShooterGameMode* GameMode = Cast<AArenaShooterGameMode>(UGameplayStatics::GetGameMode(this));
+	bool bMatchNotInProgress = GameMode && GameMode->GetMatchState() != MatchState::InProgress;
+	
+	if (Combat && Combat->EquippedWeapon && bMatchNotInProgress)
 	{
 		Combat->EquippedWeapon->Destroy();
 	}
@@ -501,6 +505,10 @@ void AArenaShooterCharacter::MulticastElim_Implementation()
 	GetCharacterMovement()->DisableMovement();
 	GetCharacterMovement()->StopMovementImmediately();
 	bDisableGameplay = true;
+	if (Combat)
+	{
+		Combat->FireButtonPressed(false);
+	}
 	
 	// disable collision
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);

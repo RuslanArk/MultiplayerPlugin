@@ -6,9 +6,11 @@
 #include "ArenaShooter/Character/ArenaShooterCharacter.h"
 #include "ArenaShooter/Components/CombatComponent.h"
 #include "ArenaShooter/GameModes/ArenaShooterGameMode.h"
+#include "ArenaShooter/GameState/ArenaShooterGameState.h"
 #include "ArenaShooter/HUD/Announcement.h"
 #include "ArenaShooter/HUD/ArenaShooterHUD.h"
 #include "ArenaShooter/HUD/CharacterOverlay.h"
+#include "ArenaShooter/PlayerState/ArenaShooterPlayerState.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
@@ -343,7 +345,8 @@ void AArenaShooterPlayerController::HandleMatchHasStarted()
 	ArenaShooterHUD = ArenaShooterHUD == nullptr ? Cast<AArenaShooterHUD>(GetHUD()) : ArenaShooterHUD;
 	if (ArenaShooterHUD)
 	{
-		ArenaShooterHUD->AddCharacterOverlay();
+		if (ArenaShooterHUD->CharacterOverlay == nullptr) ArenaShooterHUD->AddCharacterOverlay();
+		
 		if (ArenaShooterHUD->Announcement)
 		{
 			ArenaShooterHUD->Announcement->SetVisibility(ESlateVisibility::Hidden);
@@ -365,7 +368,35 @@ void AArenaShooterPlayerController::HandleCooldown()
 			ArenaShooterHUD->Announcement->SetVisibility(ESlateVisibility::Visible);
 			FString AnnouncementText("New Match Starts In : ");
 			ArenaShooterHUD->Announcement->AnnouncementText->SetText(FText::FromString(AnnouncementText));
-			ArenaShooterHUD->Announcement->InfoText->SetText(FText());
+
+			AArenaShooterGameState* ArenaShooterGameState = Cast<AArenaShooterGameState>(UGameplayStatics::GetGameState(this));
+			AArenaShooterPlayerState* ASPlayerState = GetPlayerState<AArenaShooterPlayerState>();
+			if (ArenaShooterGameState && ASPlayerState)
+			{
+				FString InfoTextString("");
+				TArray<AArenaShooterPlayerState*> TopPlayers = ArenaShooterGameState->TopScoringPlayers;
+				if (TopPlayers.Num() == 0)
+				{
+					InfoTextString = FString("There is no winner");
+				}
+				else if (TopPlayers.Num() == 1 && TopPlayers[0] == ASPlayerState)
+				{
+					InfoTextString = FString("You are the winner!");
+				}
+				else if (TopPlayers.Num() == 1)
+				{
+					InfoTextString = FString::Printf(TEXT("Winner: \n%s"), *TopPlayers[0]->GetPlayerName());
+				}
+				else if (TopPlayers.Num() > 1)
+				{
+					InfoTextString = FString("Players tied for the win:\n");
+					for (auto TiedPlayer : TopPlayers)
+					{
+						InfoTextString.Append(FString::Printf(TEXT("%s\n"), *TiedPlayer->GetPlayerName()));
+					}
+				}
+				ArenaShooterHUD->Announcement->InfoText->SetText(FText::FromString(InfoTextString));
+			}			
 		}
 	}
 

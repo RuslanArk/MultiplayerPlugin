@@ -9,6 +9,7 @@
 #include "ArenaShooter/Character/ArenaShooterCharacter.h"
 #include "ArenaShooter/PlayerController/ArenaShooterPlayerController.h"
 #include "ArenaShooter/PlayerState/ArenaShooterPlayerState.h"
+#include "ArenaShooter/GameState/ArenaShooterGameState.h"
 
 namespace MatchState
 {
@@ -77,9 +78,11 @@ void AArenaShooterGameMode::PlayerEliminated(AArenaShooterCharacter* EliminatedC
 {
 	AArenaShooterPlayerState* AttackerPlayerState = AttackerController ? Cast<AArenaShooterPlayerState>(AttackerController->PlayerState) : nullptr;
 	AArenaShooterPlayerState* VictimPlayerState = VictimController ? Cast<AArenaShooterPlayerState>(VictimController->PlayerState) : nullptr;
-	if (AttackerPlayerState && AttackerPlayerState != VictimPlayerState)
+	AArenaShooterGameState* ArenaShooterGameState = GetGameState<AArenaShooterGameState>();
+	if (AttackerPlayerState && AttackerPlayerState != VictimPlayerState && ArenaShooterGameState)
 	{
 		AttackerPlayerState->AddToScore(1.0f);
+		ArenaShooterGameState->UpdateTopScore(AttackerPlayerState);
 	}
 
 	if (VictimPlayerState)
