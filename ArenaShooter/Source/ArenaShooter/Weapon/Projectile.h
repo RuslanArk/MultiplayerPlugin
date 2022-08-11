@@ -7,6 +7,7 @@
 #include "Projectile.generated.h"
 
 class UBoxComponent;
+class UNiagaraComponent;
 class UParticleSystem;
 class UParticleSystemComponent;
 class UProjectileMovementComponent;
@@ -17,24 +18,26 @@ class ARENASHOOTER_API AProjectile : public AActor
 {
 	GENERATED_BODY()
 
-private:
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* CollisionBox;
-
-	UPROPERTY(VisibleAnywhere)
-	UProjectileMovementComponent* ProjectileMovementComponent;
-
-	UPROPERTY(EditAnywhere)
-	UParticleSystem* Tracer;
-
-	UPROPERTY(EditAnywhere)
-	UParticleSystemComponent* TracerComp;
+protected:
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ImpactParticles;
 
 	UPROPERTY(EditAnywhere)
 	USoundCue* ImpactSound;
+
+	UPROPERTY(EditAnywhere)
+	UBoxComponent* CollisionBox;
+
+	UPROPERTY()
+	UNiagaraComponent* TrailSystemComponent;
+
+private:
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* Tracer;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystemComponent* TracerComp;
 
 protected:
 	UPROPERTY(EditAnywhere)

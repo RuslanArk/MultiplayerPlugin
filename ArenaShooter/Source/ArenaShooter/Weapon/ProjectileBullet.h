@@ -6,13 +6,18 @@
 #include "Projectile.h"
 #include "ProjectileBullet.generated.h"
 
-/**
- * 
- */
+class UProjectileMovementComponent;
+
 UCLASS()
 class ARENASHOOTER_API AProjectileBullet : public AProjectile
 {
 	GENERATED_BODY()
+
+public:
+	AProjectileBullet();
+
+	UPROPERTY(EditAnywhere)
+	UProjectileMovementComponent* ProjectileMovement;
 
 protected:
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) override;
