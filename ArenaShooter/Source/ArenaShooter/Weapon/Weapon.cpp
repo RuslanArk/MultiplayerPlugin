@@ -111,11 +111,20 @@ void AWeapon::OnRep_WeaponState()
 		GetWeaponMesh()->SetSimulatePhysics(false);
 		GetWeaponMesh()->SetEnableGravity(false);
 		GetWeaponMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		if (WeaponType == EWeaponType::EWT_SubmachineGun)
+		{
+			GetWeaponMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+			GetWeaponMesh()->SetEnableGravity(true);
+			GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		}
 		break;
 	case EWeaponState::EWS_Dropped:
 		GetWeaponMesh()->SetSimulatePhysics(true);
 		GetWeaponMesh()->SetEnableGravity(true);
 		GetWeaponMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		WeaponMesh->SetCollisionResponseToAllChannels(ECR_Block);
+		WeaponMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+		WeaponMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 		break;
 	default: UE_LOG(LogWeapon, Warning, TEXT("Something went wrong with weapon state changing"));
 	}
@@ -175,6 +184,12 @@ void AWeapon::SetWeaponState(EWeaponState NewWeaponState)
 		GetWeaponMesh()->SetSimulatePhysics(false);
 		GetWeaponMesh()->SetEnableGravity(false);
 		GetWeaponMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		if (WeaponType == EWeaponType::EWT_SubmachineGun)
+		{
+			GetWeaponMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+			GetWeaponMesh()->SetEnableGravity(true);
+			GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		}
 		break;
 	case EWeaponState::EWS_Dropped:
 		if (HasAuthority())
@@ -184,6 +199,9 @@ void AWeapon::SetWeaponState(EWeaponState NewWeaponState)
 		GetWeaponMesh()->SetSimulatePhysics(true);
 		GetWeaponMesh()->SetEnableGravity(true);
 		GetWeaponMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		WeaponMesh->SetCollisionResponseToAllChannels(ECR_Block);
+		WeaponMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+		WeaponMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 		break;
 	default: UE_LOG(LogWeapon, Warning, TEXT("Something went wrong with weapon state changing"));
 	}
